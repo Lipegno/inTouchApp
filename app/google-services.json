@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1001183250737",
+    "project_id": "intouch-e6f0a",
+    "storage_bucket": "intouch-e6f0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001183250737:android:63c5a389d3e633fbe34810",
+        "android_client_info": {
+          "package_name": "com.example.intouch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001183250737-20naqu1ofr5tfms0798bunb15818ti5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnTTvGLr7f8_RTW2gvA4Bg776fMAmfE7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001183250737-20naqu1ofr5tfms0798bunb15818ti5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

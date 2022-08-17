@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">InTouch</string>
+    <string name="start">Let\'s start!</string>
+    <string name="Logo">logo</string>
+    <string name="welcome_to_intouch">Welcome to inTouch!</string>
+    <string name="share_your_moods">share your moods and be present</string>
+    <string name="continue_string">Continue</string>
+    <string name="account_created">Account successfully created</string>
+    <string name="connect_with">Connect with your spacial one</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="request_was_sent">A connection request was sent</string>
+    <string name="please_wait">Please wait for it to be accepted</string>
+    <string name="cancel_request">Cancel request</string>
+    <string name="sign_out">Sign out</string>
+    <string name="log_in">Log In</string>
+    <string name="title_activity_home_page">HomePageActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="user_email_com">user@email.com</string>
+    <string name="user_image">User Image</string>
+</resources>

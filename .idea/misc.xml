@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/projects/InTouch/app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.1" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/drawable/rounded_grey_button.xml" value="0.1" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/drawable/rounded_valencia_button.xml" value="0.1" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_account_created.xml" value="0.17806484295845998" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_accountcreated.xml" value="0.1" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_connectwith.xml" value="0.17806484295845998" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_create_account.xml" value="0.1" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_createaccount.xml" value="0.17806484295845998" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_log_in.xml" value="0.3067708333333333" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/fragment_first.xml" value="0.18802083333333333" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/fragment_second.xml" value="0.18802083333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
