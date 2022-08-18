@@ -34,6 +34,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
+        // Initialization
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
         inputConfirmPassword = findViewById(R.id.inputConfirmPassword);
@@ -52,25 +53,20 @@ public class CreateAccountActivity extends AppCompatActivity {
         });
     }
 
+    // Performs the authentication
     private void PerformAuth() {
         String email = inputEmail.getText().toString();
         String password = inputPassword.getText().toString();
         String confirmPassword = inputConfirmPassword.getText().toString();
 
         if(!email.matches(emailPattern)){
-            inputEmail.setError("Please, enter a correct email.");
-            inputEmail.requestFocus();
+            validateInput(inputEmail, "Please, enter a correct email.");
         } else if(password.isEmpty()) {
-            inputPassword.setError("Please, enter a password.");
-            inputPassword.requestFocus();
+            validateInput(inputPassword, "Please, enter a password.");
         } else if(!password.equals(confirmPassword)) {
-            inputConfirmPassword.setError("Passwords do not match.");
-            inputConfirmPassword.requestFocus();
+            validateInput(inputConfirmPassword, "Passwords do not match.");
         } else {
-            progressDialog.setMessage("Please, wait while we are creating your account.");
-            progressDialog.setTitle("Register");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+            showProgressDialog(progressDialog);
 
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -87,9 +83,22 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
     }
 
+    private void showProgressDialog(@NonNull ProgressDialog progressDialog) {
+        progressDialog.setMessage("Please, wait while we are creating your account.");
+        progressDialog.setTitle("Register");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+    }
+
+    private void validateInput(@NonNull EditText input, String error){
+        input.setError(error);
+        input.requestFocus();
+    }
+
     private void redirectToAccountCreatedActivity() {
         Intent intent = new Intent(this, AccountCreatedActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
 }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -22,6 +23,7 @@ public class LogInActivity extends AppCompatActivity {
     EditText inputEmail;
     EditText inputPassword;
     Button buttonContinueLogIn;
+    SignInButton signInButton;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     ProgressDialog progressDialog;
 
@@ -42,12 +44,26 @@ public class LogInActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
+        // Set the dimensions of the sign-in button.
+        signInButton = findViewById(R.id.google_sign_in);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+
         buttonContinueLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PerformLogIn();
             }
         });
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LogInActivity.this, GoogleSignInActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void PerformLogIn() {
@@ -55,23 +71,18 @@ public class LogInActivity extends AppCompatActivity {
         String password = inputPassword.getText().toString();
 
         if (!email.matches(emailPattern)) {
-            inputEmail.setError("Please, enter a correct email.");
-            inputEmail.requestFocus();
+            validateInput(inputEmail, "Please, enter a correct email.");
         } else if (password.isEmpty()) {
-            inputPassword.setError("Please, enter a password.");
-            inputPassword.requestFocus();
+            validateInput(inputPassword, "Please, enter a password.");
         } else {
-            progressDialog.setMessage("Please, wait while we are logging you in.");
-            progressDialog.setTitle("Log In");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+            showProgressDialog(progressDialog);
 
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         progressDialog.dismiss();
-                        redirectToHomeActivity();
+                        redirectToHomeActivity(email);
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(LogInActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
@@ -81,9 +92,29 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
-    private void redirectToHomeActivity() {
-        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+    private void showProgressDialog(@NonNull ProgressDialog progressDialog) {
+        progressDialog.setMessage("Please, wait while we are logging you in.");
+        progressDialog.setTitle("Log In");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+    }
+
+    private void validateInput(@NonNull EditText input, String error){
+        input.setError(error);
+        input.requestFocus();
+    }
+
+    private void redirectToHomeActivity(String email) {
+        Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Creating the bundle
+        Bundle bundle = new Bundle();
+        // Adding the data to bundle
+        bundle.putString("email", email);
+        // Adding the bundle to the intent
+        intent.putExtras(bundle);
+
         startActivity(intent);
     }
 }

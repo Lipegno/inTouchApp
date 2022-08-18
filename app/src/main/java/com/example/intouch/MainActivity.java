@@ -11,6 +11,8 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
     String prevStarted = "yes";
 
+    // Checks if it the first time that the app is opened and displays the "Welcome" screen
+    // if not, it redirects the user to the login page
     @Override
     protected void onResume() {
         super.onResume();
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    // Redirects to the login screen
     public void redirectToLogIn(){
         Intent intent = new Intent(this,LogInActivity.class);
         startActivity(intent);
