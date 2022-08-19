@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.SignInButton;
@@ -47,6 +48,7 @@ public class LogInActivity extends AppCompatActivity {
         // Set the dimensions of the sign-in button.
         signInButton = findViewById(R.id.google_sign_in);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+        setGoogleSignInButtonText(signInButton, "Continue with Google");
 
 
         buttonContinueLogIn.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +66,19 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setGoogleSignInButtonText(SignInButton signInButton, String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
     }
 
     private void PerformLogIn() {
