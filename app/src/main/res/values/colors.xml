@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="valencia">#D8484E</color>
     <color name="grey">#EBEBEB</color>
+    <color name="opac_black">#BF000000</color>
 </resources>
