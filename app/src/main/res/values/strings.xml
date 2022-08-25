@@ -27,4 +27,12 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="user_email_com">user@email.com</string>
     <string name="user_image">User Image</string>
+    <string name="plus">+</string>
+    <string name="select_a_mood_and_pick_a_color">Select a mood and pick a color</string>
+    <string name="minus">-</string>
+    <string name="plusminus">+/-</string>
+    <string name="ok">OK</string>
+    <string name="select_the_color_scheme">Select the color scheme that best represents your mood</string>
+    <string name="which_side_of_the_wallpaper">Which side of the wallpaper do you want your moods to be represnted?</string>
+    <string name="the_other_side_will_represent">The other side will represent the moods of your special one</string>
 </resources>

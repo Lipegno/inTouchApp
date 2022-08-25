@@ -57,7 +57,6 @@ public class GoogleSignInActivity extends LogInActivity {
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent,RC_SIGN_IN);
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -103,11 +102,11 @@ public class GoogleSignInActivity extends LogInActivity {
     private void updateUI(FirebaseUser user) {
         Intent intent = new Intent(GoogleSignInActivity.this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        String userEmail = user.getEmail();
         // Creating the bundle
         Bundle bundle = new Bundle();
         // Adding the data to bundle
-        bundle.putString("email", "test");
+        bundle.putString("email", userEmail);
         // Adding the bundle to the intent
         intent.putExtras(bundle);
 
