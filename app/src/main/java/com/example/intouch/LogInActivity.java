@@ -25,6 +25,7 @@ public class LogInActivity extends AppCompatActivity {
     EditText inputPassword;
     Button buttonContinueLogIn;
     SignInButton signInButton;
+    TextView signUpTextView;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     ProgressDialog progressDialog;
 
@@ -39,6 +40,7 @@ public class LogInActivity extends AppCompatActivity {
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
         buttonContinueLogIn = findViewById(R.id.buttonContinueLogIn);
+        signUpTextView = findViewById(R.id.signUp);
 
         progressDialog = new ProgressDialog(this);
 
@@ -66,6 +68,19 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+        signUpTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                redirectToCreateAccountActivity();
+            }
+        });
+
+    }
+
+    private void redirectToCreateAccountActivity() {
+        Intent intent = new Intent(this, CreateAccountActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void setGoogleSignInButtonText(SignInButton signInButton, String buttonText) {
