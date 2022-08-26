@@ -9,18 +9,21 @@
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/rounded_valencia_button.xml" value="0.1" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/splitted_rectangle.xml" value="0.2765" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/splitted_rectangle_115.xml" value="0.2765" />
-        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_account_created.xml" value="0.17806484295845998" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_account_created.xml" value="0.25" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_accountcreated.xml" value="0.1" />
-        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_color_scheme.xml" value="0.22" />
-        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_connected.xml" value="0.36666666666666664" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_color_scheme.xml" value="0.33" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_connect_with.xml" value="0.33645833333333336" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_connected.xml" value="0.25" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_connectwith.xml" value="0.17806484295845998" />
-        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_create_account.xml" value="0.1" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_create_account.xml" value="0.33" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_createaccount.xml" value="0.17806484295845998" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_log_in.xml" value="0.33" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_mood_color_picker.xml" value="0.33" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_requestsent.xml" value="0.36666666666666664" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_sent_request.xml" value="0.33645833333333336" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_wait_request.xml" value="0.33645833333333336" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_waitforrequest.xml" value="0.36666666666666664" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_wallpaper_side.xml" value="0.2717391304347826" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/fragment_first.xml" value="0.18802083333333333" />

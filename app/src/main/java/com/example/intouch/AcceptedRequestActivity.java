@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MoodColorPickerActivity extends AppCompatActivity {
+public class AcceptedRequestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mood_color_picker);
+        setContentView(R.layout.activity_accepted_request);
     }
 }

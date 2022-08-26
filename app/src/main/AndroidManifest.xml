@@ -13,6 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InTouch"
         tools:targetApi="31">
+        <activity
+            android:name=".AcceptedRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WaitRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SentRequestActivity"
+            android:exported="false" />
+
         <receiver
             android:name=".InTouchWidget"
             android:exported="false">
@@ -29,7 +39,7 @@
             android:name=".WallpaperSideActivity"
             android:exported="false" />
         <activity
-            android:name=".MoodColorPickerActivity"
+            android:name=".CustomizeColorsActivity"
             android:exported="false" />
         <activity
             android:name=".ColorSchemePickerActivity"
