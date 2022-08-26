@@ -10,4 +10,10 @@
     <color name="valencia">#D8484E</color>
     <color name="grey">#EBEBEB</color>
     <color name="opac_black">#BF000000</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="pink">#ff2d55</color>
+    <color name="green">#72a682</color>
 </resources>

@@ -35,4 +35,17 @@
     <string name="select_the_color_scheme">Select the color scheme that best represents your mood</string>
     <string name="which_side_of_the_wallpaper">Which side of the wallpaper do you want your moods to be represnted?</string>
     <string name="the_other_side_will_represent">The other side will represent the moods of your special one</string>
+
+    <!--- Widget App -->
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="appwidget_left_text">left</string>
+    <string name="appwidget_right_text">right</string>
+    <string name="heart_emoji">&#128525;</string>
+    <string name="hug_emoji">&#129303;</string>
+    <string name="cry_emoji">&#128546;</string>
+    <string name="muscle_emoji">&#128170;</string>
+
+    <!-- End widget app -->
 </resources>
