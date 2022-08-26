@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.intouch.dao.DAOUser;
+import com.example.intouch.db.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -68,12 +70,23 @@ public class CreateAccountActivity extends AppCompatActivity {
         } else {
             showProgressDialog(progressDialog);
 
+            DAOUser daoUser = new DAOUser();
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        progressDialog.dismiss();
-                        redirectToAccountCreatedActivity();
+                        //  a transaction model would be better
+                        String email = task.getResult().getUser().getEmail();
+                        String uid = task.getResult().getUser().getUid();
+                        daoUser.add(new User(email, uid)).addOnSuccessListener(suc ->{
+                            Toast.makeText(CreateAccountActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
+
+                            progressDialog.dismiss();
+                            redirectToAccountCreatedActivity();
+                        }).addOnFailureListener(fail ->{
+                            progressDialog.dismiss();
+                            Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
+                        });
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(CreateAccountActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
