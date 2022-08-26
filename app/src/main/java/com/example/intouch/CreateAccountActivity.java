@@ -70,7 +70,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         } else {
             showProgressDialog(progressDialog);
 
-            DAOUser daoUser = new DAOUser();
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -78,7 +77,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                         //  a transaction model would be better
                         String email = task.getResult().getUser().getEmail();
                         String uid = task.getResult().getUser().getUid();
-                        daoUser.add(new User(email, uid)).addOnSuccessListener(suc ->{
+                        DAOUser.getInstance().add(new User(email, uid)).addOnSuccessListener(suc ->{
                             Toast.makeText(CreateAccountActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
 
                             progressDialog.dismiss();
