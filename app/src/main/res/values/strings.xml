@@ -49,6 +49,7 @@
     <string name="customize_colors">Customize colors</string>
     <string name="you_are_now_connected">You are now connected!</string>
     <string name="or_sign_up">or Sign Up</string>
+    <string name="don_t_worry_you_can_change_the_color_scheme_at_any_time">Don\'t worry, you can change the color scheme at any time</string>
 
     <!-- End widget app -->
 </resources>

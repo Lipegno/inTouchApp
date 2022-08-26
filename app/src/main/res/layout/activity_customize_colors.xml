@@ -85,7 +85,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="135dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/rounded_valencia_button"
         android:fontFamily="sans-serif-medium"
@@ -96,8 +96,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/okayMoodButton"
+        app:layout_constraintTop_toBottomOf="@+id/infoText"
         tools:ignore="TextContrastCheck" />
 
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/don_t_worry_you_can_change_the_color_scheme_at_any_time"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/okayMoodButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
