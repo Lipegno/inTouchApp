@@ -5,21 +5,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.intouch.dao.DAOUser;
 import com.example.intouch.db.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class CreateAccountActivity extends AppCompatActivity {
+
+    private StorageReference storageReference;
 
     EditText inputEmail;
     EditText inputPassword;
@@ -46,6 +54,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         buttonContinue.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -74,9 +83,19 @@ public class CreateAccountActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
+
+                        // Reference to default image file in Cloud Storage
+                        storageReference.child("images/profile_image.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                updateUserProfilePicture(uri);
+                            }
+                        });
+
                         //  a transaction model would be better
                         String email = task.getResult().getUser().getEmail();
                         String uid = task.getResult().getUser().getUid();
+
                         DAOUser.getInstance().add(new User(email, uid)).addOnSuccessListener(suc ->{
                             Toast.makeText(CreateAccountActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
 
@@ -111,6 +130,22 @@ public class CreateAccountActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AccountCreatedActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private void updateUserProfilePicture(final Uri uri) {
+        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(uri)
+                .build();
+
+        mUser.updateProfile(profileChangeRequest)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CreateAccountActivity.this, "Picture updated", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 }

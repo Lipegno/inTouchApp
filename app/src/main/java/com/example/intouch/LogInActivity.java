@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class LogInActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +115,7 @@ public class LogInActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         progressDialog.dismiss();
-                        redirectToHomeActivity(email);
+                        redirectToHomeActivity();
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(LogInActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
@@ -134,17 +137,10 @@ public class LogInActivity extends AppCompatActivity {
         input.requestFocus();
     }
 
-    private void redirectToHomeActivity(String email) {
+    private void redirectToHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // Creating the bundle
-        Bundle bundle = new Bundle();
-        // Adding the data to bundle
-        bundle.putString("email", email);
-        // Adding the bundle to the intent
-        intent.putExtras(bundle);
-
         startActivity(intent);
     }
+
 }

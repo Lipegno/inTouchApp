@@ -3,12 +3,13 @@ package com.example.intouch.db;
 public class User {
     public String email;
     public String uid;
+    public String photoURL;
 
     public User(){
 
     }
 
-    public User(String email, String uid){
+    public User(String email, String uid) {
         this.email = email;
         this.uid = uid;
     }
@@ -28,4 +29,9 @@ public class User {
     public void setUid(String uid) {
         this.uid = uid;
     }
+
+    public String getPhotoURL() { return photoURL; }
+
+    public void setPhotoURL(String photoURL) { this.photoURL = photoURL; }
+
 }
