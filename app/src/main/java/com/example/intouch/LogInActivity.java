@@ -115,7 +115,24 @@ public class LogInActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         progressDialog.dismiss();
+
+                        // Check if user is in a connection
+                        // if first time
+                        // redirect to AcceptedRequestActivity
+                        // continue with settings
+                        // else
                         redirectToHomeActivity();
+
+                        // 1) Check if user has a pending connection
+
+                        // 2) Check if user is receiver
+                        // if yes redirect him to AcceptCancelRequest view
+
+                        // else
+                        // redirect him to WaitRequestActivity
+
+
+
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(LogInActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();

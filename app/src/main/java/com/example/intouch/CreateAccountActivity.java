@@ -53,7 +53,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference();
 
         buttonContinue.setOnClickListener(new View.OnClickListener(){
@@ -70,6 +69,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         String password = inputPassword.getText().toString();
         String confirmPassword = inputConfirmPassword.getText().toString();
 
+        // Inputs validation
         if(!email.matches(emailPattern)){
             validateInput(inputEmail, "Please, enter a correct email.");
         } else if(password.isEmpty()) {
@@ -83,28 +83,36 @@ public class CreateAccountActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
+                        // If user is created
 
-                        // Reference to default image file in Cloud Storage
-                        storageReference.child("images/profile_image.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                updateUserProfilePicture(uri);
-                            }
-                        });
+                        mUser = task.getResult().getUser();
 
                         //  a transaction model would be better
-                        String email = task.getResult().getUser().getEmail();
-                        String uid = task.getResult().getUser().getUid();
+                        String email = mUser.getEmail();
+                        String uid = mUser.getUid();
+                        Uri photoUrl = mUser.getPhotoUrl();
 
-                        DAOUser.getInstance().add(new User(email, uid)).addOnSuccessListener(suc ->{
-                            Toast.makeText(CreateAccountActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
+                        DAOUser.getInstance().add(new User(email, uid, photoUrl))
+                                .addOnSuccessListener(suc ->{
+                                    Toast.makeText(CreateAccountActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
 
-                            progressDialog.dismiss();
-                            redirectToAccountCreatedActivity();
-                        }).addOnFailureListener(fail ->{
-                            progressDialog.dismiss();
-                            Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
-                        });
+                                    // Set also the default profile image
+                                    // Reference to default image file in Cloud Storage
+                                    storageReference.child("images/profile_image.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            // Update the profile image
+                                            // and redirect to the Account Created Activity
+                                            updateUserProfilePicture(uri);
+                                        }
+                                    });
+
+                                    progressDialog.dismiss();
+                                })
+                                .addOnFailureListener(fail ->{
+                                    progressDialog.dismiss();
+                                    Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
+                                });
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(CreateAccountActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
@@ -127,6 +135,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     private void redirectToAccountCreatedActivity() {
+
         Intent intent = new Intent(this, AccountCreatedActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -143,6 +152,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(CreateAccountActivity.this, "Picture updated", Toast.LENGTH_SHORT).show();
+                            redirectToAccountCreatedActivity();
                         }
                     }
                 });

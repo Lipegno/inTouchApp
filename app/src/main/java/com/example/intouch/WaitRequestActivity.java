@@ -54,10 +54,16 @@ public class WaitRequestActivity extends AppCompatActivity {
         userPhotoUrl = mUser.getPhotoUrl();
         Glide.with(this).load(userPhotoUrl.toString()).into(userImageView);
 
+        Bundle bundle = getIntent().getExtras();
+
         if (mUser != null) {
             userEmailTextView.setText(mUser.getEmail());
-            // Change to the partner email
-            waitingRequestTextView.setText("Waiting for your request to be accepted by " + mUser.getEmail());
+
+            if (bundle != null) {
+                String receiverEmail = bundle.getString("receiverEmail");
+                waitingRequestTextView.setText("Waiting for your request to be accepted by " + receiverEmail);
+            }
+
         }
 
         buttonCancelRequest.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +117,7 @@ public class WaitRequestActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     popupWindow.dismiss();
 
-                    //signOut();
+
                 }
             });
         }

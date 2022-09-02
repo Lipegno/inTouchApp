@@ -3,6 +3,7 @@ package com.example.intouch;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.app.appsearch.StorageInfo;
 import android.content.Intent;
@@ -38,7 +39,7 @@ import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private interface PictureListener {
+    /*private interface PictureListener {
         void onProfilePictureUpdated();
     }
 
@@ -61,11 +62,18 @@ public class HomeActivity extends AppCompatActivity {
 
     private Uri filePath;
     private Uri userPhotoUrl;
-    private final int PICK_IMAGE = 100;
+    private final int PICK_IMAGE = 100;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // if user is not connected to anyone
+        // redirect it to AccountCreatedActivity
+        redirectToAccountCreatedActivity();
+
+        // if user
+
+        /*
         setContentView(R.layout.activity_connect_with);
 
         userEmailTextView = findViewById(R.id.userEmail);
@@ -114,7 +122,13 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 redirectToSentRequestActivity();
             }
-        });
+        });*/
+    }
+
+    private void redirectToAccountCreatedActivity() {
+        Intent intent = new Intent(this, AccountCreatedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void redirectToSentRequestActivity() {
@@ -122,7 +136,7 @@ public class HomeActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
+    /*
     private void showSignOutPopUp(View view) {
         // Inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -264,4 +278,6 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
     }
+
+     */
 }

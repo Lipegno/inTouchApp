@@ -1,17 +1,20 @@
 package com.example.intouch.db;
 
+import android.net.Uri;
+
 public class User {
     public String email;
     public String uid;
-    public String photoURL;
+    public Uri photoURL;
 
     public User(){
 
     }
 
-    public User(String email, String uid) {
+    public User(String email, String uid, Uri photoURL) {
         this.email = email;
         this.uid = uid;
+        this.photoURL = photoURL;
     }
 
     public String getEmail() {
@@ -30,8 +33,8 @@ public class User {
         this.uid = uid;
     }
 
-    public String getPhotoURL() { return photoURL; }
+    public Uri getPhotoURL() { return photoURL; }
 
-    public void setPhotoURL(String photoURL) { this.photoURL = photoURL; }
+    public void setPhotoURL(Uri photoURL) { this.photoURL = photoURL; }
 
 }
