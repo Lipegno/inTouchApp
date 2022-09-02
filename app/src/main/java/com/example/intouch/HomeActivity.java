@@ -57,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
     TextView popUpMessage;
     Button yesButton;
     Button cancelButton;
+    Button buttonContinue;
 
     private Uri filePath;
     private Uri userPhotoUrl;
@@ -68,8 +69,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect_with);
 
         userEmailTextView = findViewById(R.id.userEmail);
-        userImageView = findViewById(R.id.userImageView);
+        userImageView = findViewById(R.id.userImageViewConnectWith);
         singOutTextView = findViewById(R.id.signOut);
+        buttonContinue = findViewById(R.id.buttonContinueConnectWith);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -106,13 +108,26 @@ public class HomeActivity extends AppCompatActivity {
                 Glide.with(HomeActivity.this).load(uri.toString()).into(userImageView);
             }
         };
+
+        buttonContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                redirectToSentRequestActivity();
+            }
+        });
+    }
+
+    private void redirectToSentRequestActivity() {
+        Intent intent = new Intent(this, SentRequestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void showSignOutPopUp(View view) {
         // Inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_window, null);
+        View popupView = inflater.inflate(R.layout.activity_popup_window, null);
 
         //Specify the length and width through constants
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -150,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Show the popup window
         // Which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(findViewById(R.id.userImageView), Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(findViewById(R.id.userImageViewConnectWith), Gravity.CENTER, 0, 0);
 
     }
 

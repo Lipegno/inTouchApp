@@ -37,11 +37,11 @@
         android:layout_height="100dp"
         android:layout_marginBottom="10dp"
         app:cardCornerRadius="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/userEmail"
+        app:layout_constraintBottom_toTopOf="@+id/userEmailWaitRequest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
         <ImageView
-            android:id="@+id/userImage"
+            android:id="@+id/userImageWaitRequest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
@@ -49,35 +49,37 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/userEmail"
+        android:id="@+id/userEmailWaitRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:text="user@email.com"
+        android:text=""
         android:textColor="#BF000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/waiting_request"
+        app:layout_constraintBottom_toTopOf="@+id/waitingRequest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/waiting_request"
-        android:layout_width="wrap_content"
+        android:id="@+id/waitingRequest"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="30dp"
         android:lineSpacingExtra="5sp"
-        android:text="Waiting for your request to be accepted by user2@email.com"
+        android:text=""
         android:textAlignment="center"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonStart"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCancelRequest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonStart"
+        android:id="@+id/buttonCancelRequest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -89,14 +91,14 @@
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/signOut"
+        app:layout_constraintBottom_toTopOf="@+id/signOutWaitRequest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TextContrastCheck" />
 
     <TextView
-        android:id="@+id/signOut"
+        android:id="@+id/signOutWaitRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
