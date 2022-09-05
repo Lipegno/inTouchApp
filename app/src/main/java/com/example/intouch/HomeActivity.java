@@ -67,15 +67,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // if user is not connected to anyone
-        // redirect it to AccountCreatedActivity
-        redirectToAccountCreatedActivity();
 
-        // if user
-
-        /*
-        setContentView(R.layout.activity_connect_with);
-
+        setContentView(R.layout.home_page_and_settings);
+/*
         userEmailTextView = findViewById(R.id.userEmail);
         userImageView = findViewById(R.id.userImageViewConnectWith);
         singOutTextView = findViewById(R.id.signOut);

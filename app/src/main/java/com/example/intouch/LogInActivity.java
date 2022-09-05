@@ -7,12 +7,20 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.intouch.dao.DAOConnection;
+import com.example.intouch.dao.DAOPendingConnection;
+import com.example.intouch.dao.DAOUser;
+import com.example.intouch.db.Connection;
+import com.example.intouch.db.PendingConnection;
+import com.example.intouch.db.User;
+import com.example.intouch.helpers.Callback;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -114,24 +122,18 @@ public class LogInActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        progressDialog.dismiss();
+                        String userUID = task.getResult().getUser().getUid();
 
                         // Check if user is in a connection
-                        // if first time
-                        // redirect to AcceptedRequestActivity
-                        // continue with settings
-                        // else
-                        redirectToHomeActivity();
 
-                        // 1) Check if user has a pending connection
-
-                        // 2) Check if user is receiver
-                        // if yes redirect him to AcceptCancelRequest view
-
-                        // else
-                        // redirect him to WaitRequestActivity
+                        DAOConnection.getInstance().getConnectionByAUserUid(userUID,
+                                //  If there is already a connection that includes this user ->
+                                hasConnection(userUID),
+                                //  If there is no connection that includes this user ->
+                                hasNoConnection(userUID));
 
 
+                        progressDialog.dismiss();
 
                     } else {
                         progressDialog.dismiss();
@@ -140,6 +142,98 @@ public class LogInActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private Callback hasNoConnection(String userUID) {
+        return new Callback() {
+            @Override
+            public void execute(Object object) {
+                //  If there is no connection that includes this user
+                //  check if there is already a pending connection that includes this user
+                DAOPendingConnection.getInstance().getPendingConnectionByAUserUid(userUID,
+                        //  if there is already a pending connection that includes this user -> display message
+                        new Callback<PendingConnection>() {
+                            @Override
+                            public void execute(PendingConnection pc) {
+                                // 2) Check if user is receiver
+                                if(userUID.equals(pc.receiverUID)){
+                                    // if yes redirect him to AcceptCancelRequest view
+                                    redirectToAcceptCancelRequest(pc.senderUID);
+                                } else if(userUID.equals(pc.senderUID)) {
+                                    // else
+                                    // redirect him to WaitRequestActivity
+                                    DAOUser.getInstance().getUserById(pc.receiverUID,
+                                            new Callback<User>() {
+                                                @Override
+                                                public void execute(User user) {
+                                                    String receiverEmail = user.getEmail();
+                                                    redirectToWaitRequestActivity(receiverEmail);
+                                                }
+                                            }, new Callback() {
+                                                @Override
+                                                public void execute(Object object) {
+                                                    Toast.makeText(LogInActivity.this, "Could not get the receiver email.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }else{
+                                    Toast.makeText(LogInActivity.this, "User id does not match to receiver nor sender.", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        },
+                        new Callback() {
+                            @Override
+                            public void execute(Object object) {
+                                redirectToAccountCreatedActivity();
+                            }
+                        });
+            }
+        };
+    }
+
+    private void redirectToWaitRequestActivity(String receiverEmail) {
+        Intent intent = new Intent(this, WaitRequestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("receiverEmail", receiverEmail);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+    }
+
+    private void redirectToAcceptCancelRequest(String senderUID) {
+        Intent intent = new Intent(this, AcceptCancelRequestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("senderUID", senderUID);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+    }
+
+    private Callback<Connection> hasConnection(String userUID) {
+        //  If there is already a connection that includes this user ->
+        return new Callback<Connection>() {
+            @Override
+            public void execute(Connection object) {
+                //  check if it is first time after request was accepted
+
+                    // redirect to AcceptedRequestActivity
+                    // continue with settings
+
+                // else
+                redirectToHomeActivity();
+
+            }
+        };
+    }
+
+    private void redirectToAccountCreatedActivity() {
+        Intent intent = new Intent(this, AccountCreatedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void showProgressDialog(@NonNull ProgressDialog progressDialog) {

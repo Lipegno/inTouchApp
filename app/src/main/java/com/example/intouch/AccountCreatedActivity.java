@@ -149,13 +149,13 @@ public class AccountCreatedActivity extends AppCompatActivity {
                                 Toast.makeText(AccountCreatedActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                             }
                         });
-                }
+            }
         });
     }
 
     private void redirectToSentRequestActivity(String receiverEmail) {
         Intent intent = new Intent(this, SentRequestActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         Bundle bundle = new Bundle();
         bundle.putString("receiverEmail", receiverEmail);
@@ -265,9 +265,9 @@ public class AccountCreatedActivity extends AppCompatActivity {
     }
 
     // Redirects to the login screen
-    public void redirectToLogIn(){
-        Intent intent = new Intent(this,LogInActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+    public void redirectToLogIn() {
+        Intent intent = new Intent(this, LogInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -289,18 +289,17 @@ public class AccountCreatedActivity extends AppCompatActivity {
 
     private void uploadImage() {
 
-        if(filePath != null)
-        {
+        if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
 
             String uid = mUser.getUid();
-            StorageReference ref = storageReference.child("users/"+uid+"/profile_image");
+            StorageReference ref = storageReference.child("users/" + uid + "/profile_image");
 
-            if(ref != null){
-                Toast.makeText(this, ""+ref, Toast.LENGTH_SHORT).show();
+            if (ref != null) {
+                Toast.makeText(this, "" + ref, Toast.LENGTH_SHORT).show();
             }
 
             ref.putFile(filePath)
@@ -323,15 +322,15 @@ public class AccountCreatedActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(AccountCreatedActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AccountCreatedActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
 
