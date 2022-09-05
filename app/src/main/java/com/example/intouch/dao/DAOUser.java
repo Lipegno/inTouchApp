@@ -66,29 +66,4 @@ public class DAOUser {
             }
         });
     }
-
-    public void getUserById(String UID, final Callback<User> onReceived, final Callback onFailed){
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> userChildren = dataSnapshot.getChildren();
-
-                for (DataSnapshot user: userChildren) {
-                    User u = user.getValue(User.class);      //make a model User with necessary fields
-
-                    if(u.uid.equalsIgnoreCase(UID)){
-                        onReceived.execute(u);
-                        return;
-                    }
-                }
-
-                onFailed.execute(null);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 }
