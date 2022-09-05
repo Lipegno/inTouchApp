@@ -3,17 +3,15 @@ package com.example.intouch.db;
 import android.net.Uri;
 
 public class User {
-    public String email;
     public String uid;
-    public Uri photoURL;
+    public String email;
+    public String photoURL;
 
-    public User(){
+    public User(){}
 
-    }
-
-    public User(String email, String uid, Uri photoURL) {
-        this.email = email;
+    public User(String uid, String email, String photoURL) {
         this.uid = uid;
+        this.email = email;
         this.photoURL = photoURL;
     }
 
@@ -33,8 +31,8 @@ public class User {
         this.uid = uid;
     }
 
-    public Uri getPhotoURL() { return photoURL; }
+    public String getPhotoURL() { return photoURL; }
 
-    public void setPhotoURL(Uri photoURL) { this.photoURL = photoURL; }
+    public void setPhotoURL(String photoURL) { this.photoURL = photoURL; }
 
 }

@@ -14,14 +14,19 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.intouch.dao.DAOUser;
+import com.example.intouch.db.Connection;
 import com.example.intouch.db.User;
+import com.example.intouch.helpers.Callback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -39,6 +44,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +61,9 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        buttonContinue.setOnClickListener(new View.OnClickListener(){
+        buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PerformAuth();
@@ -70,11 +78,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         String confirmPassword = inputConfirmPassword.getText().toString();
 
         // Inputs validation
-        if(!email.matches(emailPattern)){
+        if (!email.matches(emailPattern)) {
             validateInput(inputEmail, "Please, enter a correct email.");
-        } else if(password.isEmpty()) {
+        } else if (password.isEmpty()) {
             validateInput(inputPassword, "Please, enter a password.");
-        } else if(!password.equals(confirmPassword)) {
+        } else if (!password.equals(confirmPassword)) {
             validateInput(inputConfirmPassword, "Passwords do not match.");
         } else {
             showProgressDialog(progressDialog);
@@ -82,44 +90,44 @@ public class CreateAccountActivity extends AppCompatActivity {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        // If user is created
-
+                    if (task.isSuccessful()) {
                         mUser = task.getResult().getUser();
-
-                        //  a transaction model would be better
                         String email = mUser.getEmail();
                         String uid = mUser.getUid();
-                        Uri photoUrl = mUser.getPhotoUrl();
 
-                        DAOUser.getInstance().add(new User(email, uid, photoUrl))
-                                .addOnSuccessListener(suc ->{
-                                    Toast.makeText(CreateAccountActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
+                        // Set also the default profile image
+                        // Reference to default image file in Cloud Storage
+                        storageReference.child("images/profile_image.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                addNewUser(uid, email, uri);
+                            }
+                        });
 
-                                    // Set also the default profile image
-                                    // Reference to default image file in Cloud Storage
-                                    storageReference.child("images/profile_image.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            // Update the profile image
-                                            // and redirect to the Account Created Activity
-                                            updateUserProfilePicture(uri);
-                                        }
-                                    });
+                        progressDialog.dismiss();
 
-                                    progressDialog.dismiss();
-                                })
-                                .addOnFailureListener(fail ->{
-                                    progressDialog.dismiss();
-                                    Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
-                                });
+
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(CreateAccountActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateAccountActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
+    }
+
+    private void addNewUser(String uid, String email, @NonNull Uri photoURL) {
+        User user = new User(uid, email, photoURL.toString());
+
+        DAOUser.getInstance().add(user)
+                .addOnSuccessListener(suc -> {
+                    Toast.makeText(CreateAccountActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
+                    // Update the profile image
+                    updateUserProfilePicture(photoURL);
+                })
+                .addOnFailureListener(fail -> {
+                    Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void showProgressDialog(@NonNull ProgressDialog progressDialog) {
@@ -129,7 +137,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
-    private void validateInput(@NonNull EditText input, String error){
+    private void validateInput(@NonNull EditText input, String error) {
         input.setError(error);
         input.requestFocus();
     }
@@ -137,7 +145,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     private void redirectToAccountCreatedActivity() {
 
         Intent intent = new Intent(this, AccountCreatedActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

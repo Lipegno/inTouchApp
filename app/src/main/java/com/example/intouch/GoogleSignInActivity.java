@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.net.wifi.hotspot2.pps.Credential;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.intouch.dao.DAOUser;
+import com.example.intouch.db.User;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -19,15 +22,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class GoogleSignInActivity extends LogInActivity {
 
+    private StorageReference storageReference;
+    private DatabaseReference mDatabase;
 
     private static final int RC_SIGN_IN = 101;
     GoogleSignInClient mGoogleSignInClient;
@@ -35,9 +47,13 @@ public class GoogleSignInActivity extends LogInActivity {
     FirebaseUser mUser;
     ProgressDialog progressDialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Google Sign In...");
@@ -88,7 +104,12 @@ public class GoogleSignInActivity extends LogInActivity {
                             progressDialog.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            String email = user.getEmail();
+                            String uid = user.getUid();
+                            Uri photoURL = user.getPhotoUrl();
+
+                            addNewUser(uid,email,photoURL);
+
                         } else {
                             progressDialog.dismiss();
                             // If sign in fails, display a message to the user.
@@ -99,17 +120,25 @@ public class GoogleSignInActivity extends LogInActivity {
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
-        Intent intent = new Intent(GoogleSignInActivity.this, HomeActivity.class);
+    private void redirectToAccountCreatedActivity() {
+        Intent intent = new Intent(GoogleSignInActivity.this, AccountCreatedActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        String userEmail = user.getEmail();
-        // Creating the bundle
-        Bundle bundle = new Bundle();
-        // Adding the data to bundle
-        bundle.putString("email", userEmail);
-        // Adding the bundle to the intent
-        intent.putExtras(bundle);
-
         startActivity(intent);
     }
+
+
+    private void addNewUser(String uid, String email, @NonNull Uri photoURL) {
+        User user = new User(uid, email, photoURL.toString());
+
+        DAOUser.getInstance().add(user)
+                .addOnSuccessListener(suc -> {
+                    Toast.makeText(GoogleSignInActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
+                    redirectToAccountCreatedActivity();
+                })
+                .addOnFailureListener(fail -> {
+                    Toast.makeText(GoogleSignInActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
 }
