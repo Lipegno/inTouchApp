@@ -167,8 +167,7 @@ public class LogInActivity extends AppCompatActivity {
                                             new Callback<User>() {
                                                 @Override
                                                 public void execute(User user) {
-                                                    String receiverEmail = user.getEmail();
-                                                    redirectToWaitRequestActivity(receiverEmail);
+                                                    redirectToWaitRequestActivity(user);
                                                 }
                                             }, new Callback() {
                                                 @Override
@@ -192,12 +191,12 @@ public class LogInActivity extends AppCompatActivity {
         };
     }
 
-    private void redirectToWaitRequestActivity(String receiverEmail) {
+    private void redirectToWaitRequestActivity(User receiver) {
         Intent intent = new Intent(this, WaitRequestActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         Bundle bundle = new Bundle();
-        bundle.putString("receiverEmail", receiverEmail);
+        bundle.putSerializable("receiver", receiver);
         intent.putExtras(bundle);
 
         startActivity(intent);

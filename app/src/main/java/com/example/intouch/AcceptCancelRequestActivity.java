@@ -82,8 +82,8 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
 
         DAOUser.getInstance().getUserById(senderUID, new Callback<User>() {
             @Override
-            public void execute(User sender) {
-                sender = sender;
+            public void execute(User user) {
+                sender = user;
                 receivingText.setText("You received a connection request from " + sender.email);
             }
         }, new Callback() {
