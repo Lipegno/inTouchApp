@@ -1,17 +1,17 @@
 package com.example.intouch.models;
 
-public class UserInfo {
+public class UserSettings {
     public String userUID;
-    public String color;
+    public ColorScheme colorScheme;
     public String emoji;
 
-    public UserInfo() {
+    public UserSettings() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public UserInfo(String userUID, String color, String emoji) {
+    public UserSettings(String userUID, ColorScheme colorScheme, String emoji) {
         this.userUID = userUID;
-        this.color = color;
+        this.colorScheme = colorScheme;
         this.emoji = emoji;
     }
 
@@ -23,12 +23,12 @@ public class UserInfo {
         this.userUID = userUID;
     }
 
-    public String getColor() {
-        return color;
+    public ColorScheme getColor() {
+        return colorScheme;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColor(ColorScheme color) {
+        this.colorScheme = color;
     }
 
     public String getEmoji() {

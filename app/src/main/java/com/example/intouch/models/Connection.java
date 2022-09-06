@@ -6,35 +6,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Connection {
-    public UserInfo firstUser;
-    public UserInfo secondUser;
+    public UserSettings firstUser;
+    public UserSettings secondUser;
     public int notified;
 
     public Connection() {
-        firstUser = new UserInfo();
-        secondUser = new UserInfo();
+        firstUser = new UserSettings();
+        secondUser = new UserSettings();
         notified = 0;
     }
 
-    public Connection(UserInfo first, UserInfo second) {
+    public Connection(UserSettings first, UserSettings second) {
         this.firstUser = first;
         this.secondUser = second;
         this.notified = 0;
     }
 
-    public UserInfo getFirstUser() {
+    public UserSettings getFirstUser() {
         return firstUser;
     }
 
-    public void setFirstUser(UserInfo firstUser) {
+    public void setFirstUser(UserSettings firstUser) {
         this.firstUser = firstUser;
     }
 
-    public UserInfo getSecondUser() {
+    public UserSettings getSecondUser() {
         return secondUser;
     }
 
-    public void setSecondUser(UserInfo secondUser) {
+    public void setSecondUser(UserSettings secondUser) {
         this.secondUser = secondUser;
     }
 

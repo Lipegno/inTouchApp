@@ -22,7 +22,7 @@ import com.example.intouch.dao.DAOUser;
 import com.example.intouch.models.Connection;
 import com.example.intouch.models.PendingConnection;
 import com.example.intouch.models.User;
-import com.example.intouch.models.UserInfo;
+import com.example.intouch.models.UserSettings;
 import com.example.intouch.helpers.Callback;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -120,8 +120,8 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                         // Create a connection
                         User receiver = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString());
                         String receiverUID = receiver.uid;
-                        UserInfo firstUser = new UserInfo(receiverUID, null, null);
-                        UserInfo secondUser = new UserInfo(senderUID, null, null);
+                        UserSettings firstUser = new UserSettings(receiverUID, null, null);
+                        UserSettings secondUser = new UserSettings(senderUID, null, null);
 
                         Connection newConnection = new Connection(firstUser, secondUser);
 

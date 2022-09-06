@@ -39,6 +39,7 @@
         <entry key="app/src/main/res/layout/activity_accept_cancel_request.xml" value="0.23097826086956522" />
         <entry key="app/src/main/res/layout/activity_accepted_request.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_account_created.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_color_scheme.xml" value="0.23541666666666666" />
         <entry key="app/src/main/res/layout/activity_connect_with.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.27309782608695654" />
         <entry key="app/src/main/res/layout/activity_popup_window.xml" value="0.13753799392097266" />
