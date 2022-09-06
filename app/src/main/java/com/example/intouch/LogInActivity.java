@@ -220,7 +220,7 @@ public class LogInActivity extends AppCompatActivity {
                     DAOConnection.getInstance().notifyConnection(connection, new Callback() {
                         @Override
                         public void execute(Object object) {
-                            redirectToAcceptedRequestActivity(connection.firstUser.userUID, connection.secondUser.userUID);
+                            redirectToAcceptedRequestActivity(connection.firstUser.uid, connection.secondUser.uid);
                         }
                     }, new Callback() {
                         @Override

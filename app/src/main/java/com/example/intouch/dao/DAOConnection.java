@@ -50,7 +50,7 @@ public class DAOConnection {
                 for (DataSnapshot connection : connectionChildren) {
                     Connection c = connection.getValue(Connection.class);
 
-                    if (c.firstUser.userUID.equalsIgnoreCase(userUid) || c.secondUser.userUID.equalsIgnoreCase(userUid)) {
+                    if (c.firstUser.uid.equalsIgnoreCase(userUid) || c.secondUser.uid.equalsIgnoreCase(userUid)) {
                         onReceived.execute(c);
                         return;
                     }

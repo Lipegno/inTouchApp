@@ -120,10 +120,8 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                         // Create a connection
                         User receiver = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString());
                         String receiverUID = receiver.uid;
-                        UserSettings firstUser = new UserSettings(receiverUID, null, null);
-                        UserSettings secondUser = new UserSettings(senderUID, null, null);
 
-                        Connection newConnection = new Connection(firstUser, secondUser);
+                        Connection newConnection = new Connection(receiver, sender);
 
                         // Add the connection to the database
                         DAOConnection.getInstance().add(newConnection).addOnSuccessListener(new OnSuccessListener<Void>() {
