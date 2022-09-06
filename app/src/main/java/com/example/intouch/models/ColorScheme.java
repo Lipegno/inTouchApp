@@ -6,8 +6,8 @@ public class ColorScheme {
     String neutralColor;
     String negativeColor;
 
-    ColorScheme(String colorSchemeID, String positiveColor, String neutralColor, String negativeColor){
-        this.colorSchemeID = colorSchemeID;
+    public ColorScheme(String positiveColor, String neutralColor, String negativeColor){
+        this.colorSchemeID = "";
         this.positiveColor = positiveColor;
         this.neutralColor = neutralColor;
         this.negativeColor = negativeColor;
