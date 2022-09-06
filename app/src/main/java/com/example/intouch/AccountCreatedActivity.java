@@ -132,11 +132,13 @@ public class AccountCreatedActivity extends AppCompatActivity {
                             public void execute(User user) {
                                 String senderUid = mUser.getUid();
                                 String receivingUid = user.uid;
+
+                                User sender = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString());
                                 String status = "Pending";
                                 DAOPendingConnection.getInstance().add(new PendingConnection(senderUid, receivingUid, status)).addOnSuccessListener(suc -> {
                                     Toast.makeText(AccountCreatedActivity.this, "Your connection request has been made.", Toast.LENGTH_SHORT).show();
 
-                                    redirectToSentRequestActivity(user.email);
+                                    redirectToSentRequestActivity(user);
 
                                 }).addOnFailureListener(fail -> {
                                     Toast.makeText(AccountCreatedActivity.this, "Failed to request a connection", Toast.LENGTH_SHORT).show();
@@ -153,12 +155,12 @@ public class AccountCreatedActivity extends AppCompatActivity {
         });
     }
 
-    private void redirectToSentRequestActivity(String receiverEmail) {
+    private void redirectToSentRequestActivity(User receiver) {
         Intent intent = new Intent(this, SentRequestActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         Bundle bundle = new Bundle();
-        bundle.putString("receiverEmail", receiverEmail);
+        bundle.putSerializable("receiver", receiver);
         intent.putExtras(bundle);
 
         startActivity(intent);

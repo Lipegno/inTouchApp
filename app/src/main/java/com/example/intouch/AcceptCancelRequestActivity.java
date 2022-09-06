@@ -38,6 +38,7 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
     TextView userEmail;
     TextView receivingText;
     TextView singOutTextView;
+    User sender;
     String senderUID;
 
     ImageView userImageView;
@@ -82,6 +83,7 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
         DAOUser.getInstance().getUserById(senderUID, new Callback<User>() {
             @Override
             public void execute(User sender) {
+                sender = sender;
                 receivingText.setText("You received a connection request from " + sender.email);
             }
         }, new Callback() {
@@ -118,7 +120,8 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                     @Override
                     public void execute(PendingConnection pc) {
                         // Create a connection
-                        String receiverUID = mUser.getUid();
+                        User receiver = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString());
+                        String receiverUID = receiver.uid;
                         UserInfo firstUser = new UserInfo(receiverUID, null, null);
                         UserInfo secondUser = new UserInfo(senderUID, null, null);
 
@@ -134,7 +137,7 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                                 daoPendingConnection.deletePendingConnectionByAUsersUid(senderUID, receiverUID, new Callback() {
                                     @Override
                                     public void execute(Object object) {
-                                        redirectToAcceptedRequestActivity();
+                                        redirectToAcceptedRequestActivity(sender, receiver);
                                     }
                                 }, new Callback() {
                                     @Override
@@ -157,9 +160,15 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                 });
     }
 
-    private void redirectToAcceptedRequestActivity() {
+    private void redirectToAcceptedRequestActivity(User sender, User receiver) {
         Intent intent = new Intent(this, AcceptedRequestActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("sender", sender);
+        bundle.putSerializable("receiver", receiver);
+        intent.putExtras(bundle);
+
         startActivity(intent);
     }
 

@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.intouch.db.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -35,6 +36,7 @@ public class WaitRequestActivity extends AppCompatActivity {
     FirebaseUser mUser;
 
     private Uri userPhotoUrl;
+    User receiver;
 
 
     @Override
@@ -60,8 +62,8 @@ public class WaitRequestActivity extends AppCompatActivity {
             userEmailTextView.setText(mUser.getEmail());
 
             if (bundle != null) {
-                String receiverEmail = bundle.getString("receiverEmail");
-                waitingRequestTextView.setText("Waiting for your request to be accepted by " + receiverEmail);
+                receiver = (User) bundle.getSerializable("receiver");
+                waitingRequestTextView.setText("Waiting for your request to be accepted by " + receiver.email);
             }
 
         }

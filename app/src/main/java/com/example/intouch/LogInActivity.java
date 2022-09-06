@@ -148,6 +148,7 @@ public class LogInActivity extends AppCompatActivity {
         return new Callback() {
             @Override
             public void execute(Object object) {
+                DAOUser daoUser = DAOUser.getInstance();
                 //  If there is no connection that includes this user
                 //  check if there is already a pending connection that includes this user
                 DAOPendingConnection.getInstance().getPendingConnectionByAUserUid(userUID,
@@ -162,7 +163,7 @@ public class LogInActivity extends AppCompatActivity {
                                 } else if(userUID.equals(pc.senderUID)) {
                                     // else
                                     // redirect him to WaitRequestActivity
-                                    DAOUser.getInstance().getUserById(pc.receiverUID,
+                                    daoUser.getUserById(pc.receiverUID,
                                             new Callback<User>() {
                                                 @Override
                                                 public void execute(User user) {
@@ -217,17 +218,61 @@ public class LogInActivity extends AppCompatActivity {
         //  If there is already a connection that includes this user ->
         return new Callback<Connection>() {
             @Override
-            public void execute(Connection object) {
+            public void execute(Connection connection) {
                 //  check if it is first time after request was accepted
+                if(connection.notified == 0){
+                    DAOConnection.getInstance().notifyConnection(connection, new Callback() {
+                        @Override
+                        public void execute(Object object) {
+                            redirectToAcceptedRequestActivity(connection.firstUser.userUID, connection.secondUser.userUID);
+                        }
+                    }, new Callback() {
+                        @Override
+                        public void execute(Object object) {
+                            Toast.makeText(LogInActivity.this, "The user could not be notified.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                    // redirect to AcceptedRequestActivity
-                    // continue with settings
+                } else {
+                    redirectToHomeActivity();
+                }
 
-                // else
-                redirectToHomeActivity();
 
             }
         };
+    }
+
+    private void redirectToAcceptedRequestActivity(String firstUID, String secondUID) {
+        Intent intent = new Intent(this, AcceptedRequestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        User sender = getUserById(firstUID);
+        User receiver = getUserById(secondUID);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("sender", sender);
+        bundle.putSerializable("receiver", receiver);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+    }
+
+    private User getUserById(String firstUID) {
+        User user = new User();
+
+        DAOUser.getInstance().getUserById(firstUID, new Callback<User>() {
+            @Override
+            public void execute(User user) {
+                user = user;
+            }
+        }, new Callback() {
+            @Override
+            public void execute(Object object) {
+
+            }
+        });
+
+        return user;
     }
 
     private void redirectToAccountCreatedActivity() {

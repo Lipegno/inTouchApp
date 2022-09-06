@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <ImageView
-            android:id="@+id/user1Image"
+            android:id="@+id/user1ImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <ImageView
-            android:id="@+id/user2Image"
+            android:id="@+id/user2ImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
@@ -83,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@+id/user1CardView" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonStart"
+        android:id="@+id/buttonStartAcceptedRequest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
