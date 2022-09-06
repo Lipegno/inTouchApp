@@ -13,7 +13,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.intouch.dao.DAOUser;
+import com.example.intouch.dao.DAOUserSettings;
 import com.example.intouch.models.User;
+import com.example.intouch.models.UserSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -124,6 +126,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                 .addOnFailureListener(fail -> {
                     Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
                 });
+
+        DAOUserSettings.getInstance().add(new UserSettings(uid));
     }
 
     private void showProgressDialog(@NonNull ProgressDialog progressDialog) {
