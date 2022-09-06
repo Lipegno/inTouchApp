@@ -2,7 +2,7 @@ package com.example.intouch.dao;
 
 import androidx.annotation.NonNull;
 
-import com.example.intouch.db.Connection;
+import com.example.intouch.models.Connection;
 import com.example.intouch.helpers.Callback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.example.intouch.db.User;
+import com.example.intouch.models.User;
 
 public class AcceptedRequestActivity extends AppCompatActivity {
 

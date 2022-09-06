@@ -1,6 +1,4 @@
-package com.example.intouch.db;
-
-import android.net.Uri;
+package com.example.intouch.models;
 
 import java.io.Serializable;
 

@@ -20,15 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.intouch.dao.DAOConnection;
 import com.example.intouch.dao.DAOPendingConnection;
 import com.example.intouch.dao.DAOUser;
-import com.example.intouch.db.Connection;
-import com.example.intouch.db.PendingConnection;
-import com.example.intouch.db.User;
+import com.example.intouch.models.Connection;
+import com.example.intouch.models.PendingConnection;
+import com.example.intouch.models.User;
 import com.example.intouch.helpers.Callback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

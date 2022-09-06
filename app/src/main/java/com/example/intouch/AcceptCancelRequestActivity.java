@@ -19,16 +19,14 @@ import com.bumptech.glide.Glide;
 import com.example.intouch.dao.DAOConnection;
 import com.example.intouch.dao.DAOPendingConnection;
 import com.example.intouch.dao.DAOUser;
-import com.example.intouch.db.Connection;
-import com.example.intouch.db.PendingConnection;
-import com.example.intouch.db.User;
-import com.example.intouch.db.UserInfo;
+import com.example.intouch.models.Connection;
+import com.example.intouch.models.PendingConnection;
+import com.example.intouch.models.User;
+import com.example.intouch.models.UserInfo;
 import com.example.intouch.helpers.Callback;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
 
 public class AcceptCancelRequestActivity extends AppCompatActivity {
 

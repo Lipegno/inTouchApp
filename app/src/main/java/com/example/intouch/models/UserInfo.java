@@ -1,4 +1,4 @@
-package com.example.intouch.db;
+package com.example.intouch.models;
 
 public class UserInfo {
     public String userUID;

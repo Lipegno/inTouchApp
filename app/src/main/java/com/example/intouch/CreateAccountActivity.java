@@ -12,13 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.intouch.dao.DAOUser;
-import com.example.intouch.db.Connection;
-import com.example.intouch.db.User;
-import com.example.intouch.helpers.Callback;
+import com.example.intouch.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
