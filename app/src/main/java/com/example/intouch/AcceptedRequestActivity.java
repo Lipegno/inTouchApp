@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.intouch.models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class AcceptedRequestActivity extends AppCompatActivity {
 
@@ -58,10 +60,10 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ColorSchemePickerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
         bundle.putSerializable("firstUser", firstUser);
         bundle.putSerializable("secondUser", secondUser);
-        intent.putExtras(bundle);
+        intent.putExtras(bundle);*/
 
         startActivity(intent);
     }
