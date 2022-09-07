@@ -21,6 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.intouch.dao.DAOConnection;
+import com.example.intouch.helpers.Callback;
+import com.example.intouch.models.Connection;
+import com.example.intouch.models.User;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,25 +39,37 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Text;
+
 import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity {
 
-    /*private interface PictureListener {
+    private interface PictureListener {
         void onProfilePictureUpdated();
     }
 
     private PictureListener pictureListener;
-
     private StorageReference storageReference;
 
-
     TextView userEmailTextView;
+    TextView partnerEmailTextView;
     TextView singOutTextView;
+    TextView colorSchemeTextView;
+    TextView wallpaperSidesTextView;
+    TextView circlesTextView;
+    TextView emojisTextView;
+    TextView notificationsTextView;
+
     ImageView userImageView;
+    ImageView partnerImageView;
+
+    Button buttonDisconnect;
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    User partner;
+    Connection usersConnection;
 
     TextView popUpMessage;
     Button yesButton;
@@ -62,35 +78,131 @@ public class HomeActivity extends AppCompatActivity {
 
     private Uri filePath;
     private Uri userPhotoUrl;
-    private final int PICK_IMAGE = 100;*/
+    private final int PICK_IMAGE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.home_page_and_settings);
-/*
-        userEmailTextView = findViewById(R.id.userEmail);
-        userImageView = findViewById(R.id.userImageViewConnectWith);
-        singOutTextView = findViewById(R.id.signOut);
-        buttonContinue = findViewById(R.id.buttonContinueConnectWith);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        userPhotoUrl = mUser.getPhotoUrl();
-        Glide.with(HomeActivity.this).load(userPhotoUrl.toString()).into(userImageView);
+        userImageView = findViewById(R.id.userImageHome);
+        userEmailTextView = findViewById(R.id.userEmailHome);
+        partnerImageView = findViewById(R.id.partnerImageViewHome);
+        partnerEmailTextView = findViewById(R.id.partnerEmailHome);
+        buttonDisconnect = findViewById(R.id.buttonDisconnect);
+
+        colorSchemeTextView = findViewById(R.id.arrowColorScheme);
+        wallpaperSidesTextView = findViewById(R.id.arrowWallpaperSides);
+        circlesTextView = findViewById(R.id.arrowCircles);
+        emojisTextView = findViewById(R.id.arrowEmojis);
+        notificationsTextView = findViewById(R.id.arrowNotifications);
+
+        singOutTextView = findViewById(R.id.signOutHome);
+
 
         if (mUser != null) {
             userEmailTextView.setText(mUser.getEmail());
+            userPhotoUrl = mUser.getPhotoUrl();
+            Glide.with(HomeActivity.this).load(userPhotoUrl.toString()).into(userImageView);
+            getUsersConnection(mUser.getUid());
         }
 
-        singOutTextView.setOnClickListener(new View.OnClickListener() {
+        setOnClickListeners();
+
+        pictureListener = new PictureListener() {
+            @Override
+            public void onProfilePictureUpdated() {
+                Uri uri = mUser.getPhotoUrl();
+                //Toast.makeText(HomeActivity.this, ""+uri.toString(), Toast.LENGTH_SHORT).show();
+                Glide.with(HomeActivity.this).load(uri.toString()).into(userImageView);
+            }
+        };
+
+    }
+
+    private void getUsersConnection(String uid) {
+        DAOConnection.getInstance().getConnectionByAUserUid(mUser.getUid(), new Callback<Connection>() {
+            @Override
+            public void execute(Connection connection) {
+                usersConnection = connection;
+                if (connection.firstUser.uid.equals(mUser.getUid())) {
+                    partner = usersConnection.secondUser;
+                } else {
+                    partner = usersConnection.firstUser;
+                }
+
+                setPartnersContent(partner);
+            }
+        }, new Callback() {
+            @Override
+            public void execute(Object object) {
+
+            }
+        });
+    }
+
+    private void setPartnersContent(User partner) {
+        partnerEmailTextView.setText(partner.email);
+        Glide.with(HomeActivity.this).load(partner.photoURL).into(partnerImageView);
+    }
+
+    private void setOnClickListeners() {
+        buttonDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSignOutPopUp(view);
+                Toast.makeText(HomeActivity.this, "Disconnect", Toast.LENGTH_SHORT).show();
+                // TO DO
+                // Delete the connection between the users
+            }
+        });
+
+        colorSchemeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "Color scheme", Toast.LENGTH_SHORT).show();
+                // TO DO
+                // redirect to the activity where the color scheme is set
+            }
+        });
+
+        wallpaperSidesTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "Wallpaper", Toast.LENGTH_SHORT).show();
+                // TO DO
+                // redirect to the activity where the wallpaper is set
+            }
+        });
+
+        circlesTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "Circles", Toast.LENGTH_SHORT).show();
+                // TO DO
+                // redirect to the activity where the circles are set
+            }
+        });
+
+        emojisTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "Emojis", Toast.LENGTH_SHORT).show();
+                // TO DO
+                // redirect to the activity where the emojis are set
+            }
+        });
+
+        notificationsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
+                // TO DO
+                // redirect to the activity where the notifications are set
             }
         });
 
@@ -102,35 +214,19 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        pictureListener = new PictureListener() {
-            @Override
-            public void onProfilePictureUpdated() {
-                Uri uri = mUser.getPhotoUrl();
-                //Toast.makeText(HomeActivity.this, ""+uri.toString(), Toast.LENGTH_SHORT).show();
-                Glide.with(HomeActivity.this).load(uri.toString()).into(userImageView);
-            }
-        };
-
-        buttonContinue.setOnClickListener(new View.OnClickListener() {
+        singOutTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirectToSentRequestActivity();
+                showSignOutPopUp(view);
             }
-        });*/
+        });
     }
 
-    private void redirectToAccountCreatedActivity() {
-        Intent intent = new Intent(this, AccountCreatedActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
     }
 
-    private void redirectToSentRequestActivity() {
-        Intent intent = new Intent(this, SentRequestActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-    /*
     private void showSignOutPopUp(View view) {
         // Inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -173,7 +269,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Show the popup window
         // Which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(findViewById(R.id.userImageViewConnectWith), Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(findViewById(R.id.userImageHome), Gravity.CENTER, 0, 0);
 
     }
 
@@ -183,16 +279,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     // Redirects to the login screen
-    public void redirectToLogIn(){
-        Intent intent = new Intent(this,LogInActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+    public void redirectToLogIn() {
+        Intent intent = new Intent(this, LogInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
-    private void openGallery() {
-        Intent gallery = new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -207,18 +299,17 @@ public class HomeActivity extends AppCompatActivity {
 
     private void uploadImage() {
 
-        if(filePath != null)
-        {
+        if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
 
             String uid = mUser.getUid();
-            StorageReference ref = storageReference.child("users/"+uid+"/profile_image");
+            StorageReference ref = storageReference.child("users/" + uid + "/profile_image");
 
-            if(ref != null){
-                Toast.makeText(this, ""+ref, Toast.LENGTH_SHORT).show();
+            if (ref != null) {
+                Toast.makeText(this, "" + ref, Toast.LENGTH_SHORT).show();
             }
 
             ref.putFile(filePath)
@@ -241,15 +332,15 @@ public class HomeActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(HomeActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HomeActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
 
@@ -273,5 +364,5 @@ public class HomeActivity extends AppCompatActivity {
                 });
     }
 
-     */
+
 }

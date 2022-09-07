@@ -44,11 +44,11 @@
         app:layout_constraintTop_toBottomOf="@+id/welcome">
 
         <ImageView
-            android:id="@+id/userImage"
+            android:id="@+id/userImageHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/user_image"
-            android:scaleType="center"
+            android:scaleType="centerCrop"
             tools:ignore="ImageContrastCheck"
             tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
@@ -57,25 +57,25 @@
         android:id="@+id/user2CardView"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         app:cardCornerRadius="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectedTo">
 
         <ImageView
-            android:id="@+id/user2Image"
+            android:id="@+id/partnerImageViewHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/user_image"
-            android:scaleType="center"
+            android:scaleType="centerCrop"
             tools:ignore="ImageContrastCheck"
             tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 
 
     <TextView
-        android:id="@+id/user1Email"
+        android:id="@+id/userEmailHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -92,20 +92,21 @@
         android:id="@+id/connectedTo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
         android:text="You are connected to"
         android:textAlignment="viewStart"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user1Email" />
+        app:layout_constraintTop_toBottomOf="@+id/userEmailHome" />
 
     <TextView
-        android:id="@+id/user2Email"
+        android:id="@+id/partnerEmailHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="12dp"
         android:text="example.email.com"
         android:textAlignment="viewStart"
@@ -116,10 +117,11 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonDisconnect"
-        android:layout_width="105dp"
+        android:layout_width="0dp"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/rounded_valencia_button"
         android:fontFamily="sans-serif-medium"
         android:paddingHorizontal="10dp"
@@ -128,6 +130,8 @@
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/partnerEmailHome"
         app:layout_constraintTop_toBottomOf="@+id/connectedTo"
         tools:ignore="TextContrastCheck" />
 
@@ -135,20 +139,20 @@
         android:id="@+id/settingsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:text="Settings"
         android:textAlignment="viewStart"
         android:textColor="#BF000000"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user2Email" />
+        app:layout_constraintTop_toBottomOf="@+id/partnerEmailHome" />
 
     <TextView
         android:id="@+id/colorScheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:text="Color scheme"
         android:textAlignment="viewStart"
@@ -161,7 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="20dp"
         android:text=">"
         android:textAlignment="viewEnd"
         android:textSize="16sp"
@@ -172,7 +176,7 @@
         android:id="@+id/wallpaperSides"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:text="Wallpaper sides"
         android:textAlignment="viewStart"
@@ -185,7 +189,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="20dp"
         android:text=">"
         android:textAlignment="viewEnd"
         android:textSize="16sp"
@@ -196,9 +200,9 @@
         android:id="@+id/circles"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:text="Wallpaper sides"
+        android:text="Circles"
         android:textAlignment="viewStart"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -209,7 +213,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="20dp"
         android:text=">"
         android:textAlignment="viewEnd"
         android:textSize="16sp"
@@ -220,7 +224,7 @@
         android:id="@+id/emojis"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:text="Emojis"
         android:textAlignment="viewStart"
@@ -233,7 +237,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="20dp"
         android:text=">"
         android:textAlignment="viewEnd"
         android:textSize="16sp"
@@ -244,7 +248,7 @@
         android:id="@+id/notifications"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:text="Notifications"
         android:textAlignment="viewStart"
@@ -257,7 +261,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="20dp"
         android:text=">"
         android:textAlignment="viewEnd"
         android:textSize="16sp"
@@ -266,10 +270,10 @@
 
 
     <TextView
-        android:id="@+id/signOut"
+        android:id="@+id/signOutHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/sign_out"
         android:textColor="#BF000000"
