@@ -43,7 +43,8 @@ public class ColorSchemePickerActivity extends AppCompatActivity {
         radioCustomizeColorScheme = findViewById(R.id.radioColorCustomize);
         buttonOK = findViewById(R.id.buttonOKColorSchemePicker);
 
-        // Disable the customization for now
+        // Disable second scheme and the customization for now
+        radioColorScheme2.setEnabled(false);
         radioCustomizeColorScheme.setEnabled(false);
 
         mAuth = FirebaseAuth.getInstance();
