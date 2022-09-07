@@ -10,13 +10,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.intouch.dao.DAOUserSettings;
-import com.example.intouch.helpers.Callback;
-import com.example.intouch.models.UserSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class ColorSchemePickerActivity extends AppCompatActivity {
