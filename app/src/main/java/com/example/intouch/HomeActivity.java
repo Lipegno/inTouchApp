@@ -7,9 +7,11 @@ import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.app.appsearch.StorageInfo;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.w3c.dom.Text;
 
+import java.util.Set;
 import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity {
@@ -83,7 +86,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.home_page_and_settings);
 
         mAuth = FirebaseAuth.getInstance();
@@ -111,6 +113,14 @@ public class HomeActivity extends AppCompatActivity {
             Glide.with(HomeActivity.this).load(userPhotoUrl.toString()).into(userImageView);
             getUsersConnection(mUser.getUid());
         }
+
+        SharedPreferences prefs = getSharedPreferences(MainActivity.MY_PREFERENCE, MODE_PRIVATE);
+        Set<String> colorSchemeSet = prefs.getStringSet("colorScheme", null);
+        Set<String> emojisSet = prefs.getStringSet("emojisSet", null);
+        String wallpaperSide = prefs.getString("wallpaperSide", "right");
+
+        Toast.makeText(this, ""+wallpaperSide, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, ""+colorSchemeSet.toString(), Toast.LENGTH_SHORT).show();
 
         setOnClickListeners();
 
