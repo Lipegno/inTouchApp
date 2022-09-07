@@ -8,15 +8,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.intouch.models.UserSettings;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
     String prevStarted = "yes";
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
+    public static final String MY_PREFERENCE = "InTouch";
 
     // Checks if it the first time that the app is opened and displays the "Welcome" screen
     // if not, it redirects the user to the login page
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+
         if (!sharedpreferences.getBoolean(prevStarted, false)) {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putBoolean(prevStarted, Boolean.TRUE);
@@ -30,6 +38,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedpreferences = getSharedPreferences(MY_PREFERENCE, Context.MODE_PRIVATE);
+        editor = getSharedPreferences(MY_PREFERENCE, MODE_PRIVATE).edit();
+
+
+        // Set default app settings
+        UserSettings userSettings = new UserSettings();
+
+        //Set the values
+        Set<String> colorSchemeSet = new HashSet<String>(userSettings.colorScheme);
+        editor.putStringSet("colorSchemeSet", colorSchemeSet);
+
+        Set<String> emojisSet = new HashSet<String>(userSettings.emojis);
+        editor.putStringSet("emojisSet", emojisSet);
+        editor.putString("wallpaperSide", "right");
+        editor.commit();
     }
 
     // Redirects to the login screen
