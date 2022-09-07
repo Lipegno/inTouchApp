@@ -59,12 +59,6 @@ public class AcceptedRequestActivity extends AppCompatActivity {
     private void redirectToColorSchemePickerActivity(User firstUser, User secondUser) {
         Intent intent = new Intent(this, ColorSchemePickerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        /*Bundle bundle = new Bundle();
-        bundle.putSerializable("firstUser", firstUser);
-        bundle.putSerializable("secondUser", secondUser);
-        intent.putExtras(bundle);*/
-
         startActivity(intent);
     }
 }
