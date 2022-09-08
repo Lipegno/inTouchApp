@@ -2,7 +2,9 @@ package com.example.intouch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -34,6 +36,8 @@ public class WaitRequestActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
 
     private Uri userPhotoUrl;
     User receiver;
@@ -46,6 +50,8 @@ public class WaitRequestActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
 
         userImageView = findViewById(R.id.userImageWaitRequest);
         userEmailTextView = findViewById(R.id.userEmailWaitRequest);
@@ -157,6 +163,10 @@ public class WaitRequestActivity extends AppCompatActivity {
 
 
     private void signOut() {
+        editor.putString("email", null);
+        editor.putString("password", null);
+        editor.apply();
+
         mAuth.signOut();
         redirectToLogIn();
     }

@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +41,8 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
 
     private DatabaseReference mDatabase;
 
@@ -58,6 +62,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
 
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +93,11 @@ public class CreateAccountActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+
+                        editor.putString("email", email);
+                        editor.putString("password", password);
+                        editor.apply();
+
                         mUser = task.getResult().getUser();
                         String email = mUser.getEmail();
                         String uid = mUser.getUid();
@@ -140,7 +151,6 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     private void redirectToAccountCreatedActivity() {
-
         Intent intent = new Intent(this, AccountCreatedActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +21,16 @@ import com.example.intouch.models.Connection;
 import com.example.intouch.models.PendingConnection;
 import com.example.intouch.models.User;
 import com.example.intouch.helpers.Callback;
+import com.example.intouch.models.UserSettings;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -39,10 +45,28 @@ public class LogInActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
+        progressDialog = new ProgressDialog(this);
+
+        String savedEmail = sharedpreferences.getString("email", null);
+        String savedPassword = sharedpreferences.getString("password", null);
+
+        if (savedEmail != null && savedPassword != null) {
+            PerformLogIn(savedEmail, savedPassword);
+            return;
+        }
+
         setContentView(R.layout.activity_log_in);
 
         inputEmail = findViewById(R.id.inputEmail);
@@ -50,10 +74,6 @@ public class LogInActivity extends AppCompatActivity {
         buttonContinueLogIn = findViewById(R.id.buttonContinueLogIn);
         signUpTextView = findViewById(R.id.signUp);
 
-        progressDialog = new ProgressDialog(this);
-
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
 
         // Set the dimensions of the sign-in button.
         signInButton = findViewById(R.id.google_sign_in);
@@ -64,7 +84,9 @@ public class LogInActivity extends AppCompatActivity {
         buttonContinueLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PerformLogIn();
+                String email = inputEmail.getText().toString();
+                String password = inputPassword.getText().toString();
+                PerformLogIn(email, password);
             }
         });
 
@@ -87,7 +109,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private void redirectToCreateAccountActivity() {
         Intent intent = new Intent(this, CreateAccountActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -104,9 +126,7 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
-    private void PerformLogIn() {
-        String email = inputEmail.getText().toString();
-        String password = inputPassword.getText().toString();
+    private void PerformLogIn(String email, String password) {
 
         if (!email.matches(emailPattern)) {
             validateInput(inputEmail, "Please, enter a correct email.");
@@ -118,8 +138,14 @@ public class LogInActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        String userUID = task.getResult().getUser().getUid();
+                    if (task.isSuccessful()) {
+
+                        editor.putString("email", email);
+                        editor.putString("password", password);
+                        editor.apply();
+
+                        FirebaseUser user = task.getResult().getUser();
+                        String userUID = user.getUid();
 
                         // Check if user is in a connection
 
@@ -134,7 +160,7 @@ public class LogInActivity extends AppCompatActivity {
 
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(LogInActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -154,10 +180,10 @@ public class LogInActivity extends AppCompatActivity {
                             @Override
                             public void execute(PendingConnection pc) {
                                 // 2) Check if user is receiver
-                                if(userUID.equals(pc.receiverUID)){
+                                if (userUID.equals(pc.receiverUID)) {
                                     // if yes redirect him to AcceptCancelRequest view
                                     redirectToAcceptCancelRequest(pc.senderUID);
-                                } else if(userUID.equals(pc.senderUID)) {
+                                } else if (userUID.equals(pc.senderUID)) {
                                     // else
                                     // redirect him to WaitRequestActivity
                                     daoUser.getUserById(pc.receiverUID,
@@ -172,7 +198,7 @@ public class LogInActivity extends AppCompatActivity {
                                                     Toast.makeText(LogInActivity.this, "Could not get the receiver email.", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                }else{
+                                } else {
                                     Toast.makeText(LogInActivity.this, "User id does not match to receiver nor sender.", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -216,7 +242,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void execute(Connection connection) {
                 //  check if it is first time after request was accepted
-                if(connection.notified == 0){
+                if (connection.notified == 0) {
                     DAOConnection.getInstance().notifyConnection(connection, new Callback() {
                         @Override
                         public void execute(Object object) {
@@ -240,7 +266,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private void redirectToAcceptedRequestActivity(String firstUID, String secondUID) {
         Intent intent = new Intent(this, AcceptedRequestActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         User sender = getUserById(firstUID);
         User receiver = getUserById(secondUID);
@@ -273,7 +299,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private void redirectToAccountCreatedActivity() {
         Intent intent = new Intent(this, AccountCreatedActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -284,14 +310,14 @@ public class LogInActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
-    private void validateInput(@NonNull EditText input, String error){
+    private void validateInput(@NonNull EditText input, String error) {
         input.setError(error);
         input.requestFocus();
     }
 
     private void redirectToHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

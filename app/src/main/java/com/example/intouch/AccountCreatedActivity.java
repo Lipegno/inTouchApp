@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -52,6 +54,8 @@ public class AccountCreatedActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
 
     TextView popUpMessage;
     Button yesButton;
@@ -79,6 +83,8 @@ public class AccountCreatedActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -259,6 +265,10 @@ public class AccountCreatedActivity extends AppCompatActivity {
     }
 
     private void signOut() {
+        editor.putString("email", null);
+        editor.putString("password", null);
+        editor.apply();
+
         mAuth.signOut();
         redirectToLogIn();
     }

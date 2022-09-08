@@ -96,6 +96,8 @@ public class ColorSchemePickerActivity extends AppCompatActivity {
         colorScheme1.add("#e88504");
         colorScheme1.add("#555555");
 
+        selectedColorScheme = colorScheme1;
+
         // TO DO
         // Set circles background colors
     }

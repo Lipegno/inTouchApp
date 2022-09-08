@@ -2,7 +2,9 @@ package com.example.intouch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +24,23 @@ public class AcceptedRequestActivity extends AppCompatActivity {
 
     Button buttonLetsStart;
 
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
+
+        String wallpaperSide = sharedpreferences.getString("wallpaperSide", null);
+
+        if (wallpaperSide != null) {
+            redirectToHomeActivity();
+            return;
+        }
+
         setContentView(R.layout.activity_accepted_request);
 
         firstUserImageView = findViewById(R.id.user1ImageView);
@@ -54,6 +70,12 @@ public class AcceptedRequestActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void redirectToHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void redirectToColorSchemePickerActivity(User firstUser, User secondUser) {

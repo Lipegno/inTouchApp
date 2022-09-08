@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.app.appsearch.StorageInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -71,6 +72,9 @@ public class HomeActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
+
     User partner;
     Connection usersConnection;
 
@@ -90,6 +94,8 @@ public class HomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
         storageReference = FirebaseStorage.getInstance().getReference();
 
         userImageView = findViewById(R.id.userImageHome);
@@ -284,6 +290,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void signOut() {
+        editor.putString("email", null);
+        editor.putString("password", null);
+        editor.apply();
+
         mAuth.signOut();
         redirectToLogIn();
     }
