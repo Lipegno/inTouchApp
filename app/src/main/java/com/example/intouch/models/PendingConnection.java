@@ -1,6 +1,12 @@
 package com.example.intouch.models;
 
+import com.google.firebase.database.Exclude;
+
 public class PendingConnection {
+
+    @Exclude
+    public String uID;
+
     public String senderUID;
     public String receiverUID;
     public String status;
@@ -37,5 +43,13 @@ public class PendingConnection {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getuID() {
+        return uID;
+    }
+
+    public void setuID(String uID) {
+        this.uID = uID;
     }
 }
