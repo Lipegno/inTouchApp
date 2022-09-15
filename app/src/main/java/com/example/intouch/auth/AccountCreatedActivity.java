@@ -1,4 +1,4 @@
-package com.example.intouch;
+package com.example.intouch.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.intouch.MainActivity;
+import com.example.intouch.R;
+import com.example.intouch.requests.SentRequestActivity;
 import com.example.intouch.dao.DAOConnection;
 import com.example.intouch.dao.DAOPendingConnection;
 import com.example.intouch.dao.DAOUser;
@@ -43,10 +46,6 @@ import com.google.firebase.storage.UploadTask;
 
 public class AccountCreatedActivity extends AppCompatActivity {
 
-    private interface PictureListener {
-        void onProfilePictureUpdated();
-    }
-
     EditText partnerEmail;
     TextView userEmail;
     TextView singOutTextView;
@@ -63,12 +62,11 @@ public class AccountCreatedActivity extends AppCompatActivity {
     Button buttonContinue;
 
     private Uri filePath;
-    private Uri userPhotoUrl;
+    private Uri userPhotoURL;
     private final int PICK_IMAGE = 100;
 
-    private AccountCreatedActivity.PictureListener pictureListener;
+    private ProfilePicture.PictureListener pictureListener;
 
-    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,16 +84,14 @@ public class AccountCreatedActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
 
-        storageReference = FirebaseStorage.getInstance().getReference();
-
 
         if (mUser != null) {
             userEmail.setText(mUser.getEmail());
 
-            userPhotoUrl = mUser.getPhotoUrl();
+            userPhotoURL = mUser.getPhotoUrl();
 
             Glide.with(this)
-                    .load(userPhotoUrl)
+                    .load(userPhotoURL)
                     .into(userImageView);
         }
 
@@ -114,7 +110,7 @@ public class AccountCreatedActivity extends AppCompatActivity {
             }
         });
 
-        pictureListener = new AccountCreatedActivity.PictureListener() {
+        pictureListener = new ProfilePicture.PictureListener() {
             @Override
             public void onProfilePictureUpdated() {
                 Uri uri = mUser.getPhotoUrl();
@@ -291,74 +287,17 @@ public class AccountCreatedActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             filePath = data.getData();
 
-            uploadImage();
-        }
-    }
-
-    private void uploadImage() {
-
-        if (filePath != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
-
-            String uid = mUser.getUid();
-            StorageReference ref = storageReference.child("users/" + uid + "/profile_image");
-
-            if (ref != null) {
-                Toast.makeText(this, "" + ref, Toast.LENGTH_SHORT).show();
-            }
-
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Reference to default image file in Cloud Storage
-                            // refactor this
-                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    updateUserProfilePicture(uri);
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            Toast.makeText(AccountCreatedActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(AccountCreatedActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                        }
-                    });
-
-        }
-    }
-
-    private void updateUserProfilePicture(final Uri uri) {
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                .setPhotoUri(uri)
-                .build();
-
-        mUser.updateProfile(profileChangeRequest)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AccountCreatedActivity.this, "Picture updated", Toast.LENGTH_SHORT).show();
-                            pictureListener.onProfilePictureUpdated();
-                        }
+            ProfilePicture profilePicture = new ProfilePicture(filePath, userPhotoURL, mUser, pictureListener, AccountCreatedActivity.this);
+            profilePicture.uploadImage(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(AccountCreatedActivity.this, "Picture updated", Toast.LENGTH_SHORT).show();
+                        pictureListener.onProfilePictureUpdated();
                     }
-                });
+                }
+            });
+        }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.intouch;
+package com.example.intouch.auth;
 
 import androidx.annotation.NonNull;
 
@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.intouch.R;
 import com.example.intouch.dao.DAOUser;
 import com.example.intouch.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -29,9 +30,6 @@ import com.google.firebase.storage.StorageReference;
 
 public class GoogleSignInActivity extends LogInActivity {
 
-    private StorageReference storageReference;
-    private DatabaseReference mDatabase;
-
     private static final int RC_SIGN_IN = 101;
     GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth mAuth;
@@ -42,9 +40,6 @@ public class GoogleSignInActivity extends LogInActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        storageReference = FirebaseStorage.getInstance().getReference();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Google Sign In...");

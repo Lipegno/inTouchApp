@@ -1,4 +1,4 @@
-package com.example.intouch;
+package com.example.intouch.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.intouch.MainActivity;
+import com.example.intouch.R;
 import com.example.intouch.dao.DAOUser;
 import com.example.intouch.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,7 +46,6 @@ public class CreateAccountActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
 
-    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
 
@@ -130,7 +130,17 @@ public class CreateAccountActivity extends AppCompatActivity {
                 .addOnSuccessListener(suc -> {
                     Toast.makeText(CreateAccountActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
                     // Update the profile image
-                    updateUserProfilePicture(photoURL);
+
+                    ProfilePicture profilePicture = new ProfilePicture(mUser,CreateAccountActivity.this);
+                    profilePicture.updateUserProfilePicture(photoURL, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(CreateAccountActivity.this, "Picture updated", Toast.LENGTH_SHORT).show();
+                                redirectToAccountCreatedActivity();
+                            }
+                        }
+                    });
                 })
                 .addOnFailureListener(fail -> {
                     Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
@@ -154,23 +164,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AccountCreatedActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    private void updateUserProfilePicture(final Uri uri) {
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                .setPhotoUri(uri)
-                .build();
-
-        mUser.updateProfile(profileChangeRequest)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(CreateAccountActivity.this, "Picture updated", Toast.LENGTH_SHORT).show();
-                            redirectToAccountCreatedActivity();
-                        }
-                    }
-                });
     }
 
 }
