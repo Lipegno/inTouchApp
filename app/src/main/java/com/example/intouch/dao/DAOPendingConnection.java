@@ -49,6 +49,7 @@ public class DAOPendingConnection {
                     PendingConnection pc = connection.getValue(PendingConnection.class);
 
                     if (pc.receiverUID.equalsIgnoreCase(userUid) || pc.senderUID.equalsIgnoreCase(userUid)) {
+                        pc.uID = connection.getKey();
                         onReceived.execute(pc);
                         return;
                     }
@@ -64,41 +65,7 @@ public class DAOPendingConnection {
         });
     }
 
-    public void deletePendingConnectionByAUsersUid(String senderUid, String receiverUid, final Callback onDeleted, final Callback onFailed) {
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> pendingConnectionChildren = dataSnapshot.getChildren();
-
-                for (DataSnapshot connection : pendingConnectionChildren) {
-                    PendingConnection pc = connection.getValue(PendingConnection.class);
-
-                    if (pc.receiverUID.equalsIgnoreCase(receiverUid) || pc.senderUID.equalsIgnoreCase(senderUid)) {
-                        connection.getRef().removeValue()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        onDeleted.execute(null);
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        onFailed.execute(null);
-                                    }
-                                });
-
-                        return;
-                    }
-                }
-
-                onFailed.execute(null);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    public Task<Void> deletePendingConnection(PendingConnection pc) {
+        return databaseReference.child(pc.uID).removeValue();
     }
 }

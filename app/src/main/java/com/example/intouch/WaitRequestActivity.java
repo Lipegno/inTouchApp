@@ -1,5 +1,6 @@
 package com.example.intouch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -15,9 +16,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.intouch.dao.DAOPendingConnection;
+import com.example.intouch.helpers.Callback;
+import com.example.intouch.models.PendingConnection;
 import com.example.intouch.models.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -119,18 +126,38 @@ public class WaitRequestActivity extends AppCompatActivity {
         cancelButton = popupView.findViewById(R.id.cancelButton);
 
         // change the email
-        if(action == "cancelRequest"){
+        if (action == "cancelRequest") {
             popUpMessage.setText("Are you sure you want to cancel your request?");
             yesButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     popupWindow.dismiss();
 
-
+                    DAOPendingConnection.getInstance().getPendingConnectionByAUserUid(receiver.uid, new Callback<PendingConnection>() {
+                        @Override
+                        public void execute(PendingConnection pc) {
+                            DAOPendingConnection.getInstance().deletePendingConnection(pc).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    redirectToAccountCreatedActivity();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(WaitRequestActivity.this, "Failed to delete pending connection", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }, new Callback() {
+                        @Override
+                        public void execute(Object object) {
+                            Toast.makeText(WaitRequestActivity.this, "Failed to get the pending connection.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
         }
 
-        if(action == "signout"){
+        if (action == "signout") {
             popUpMessage.setText("Are you sure you want to sign out?");
 
             yesButton.setOnClickListener(new View.OnClickListener() {
@@ -140,8 +167,6 @@ public class WaitRequestActivity extends AppCompatActivity {
                 }
             });
         }
-
-
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,12 +180,11 @@ public class WaitRequestActivity extends AppCompatActivity {
         popupWindow.showAtLocation(findViewById(R.id.userEmailWaitRequest), Gravity.CENTER, 0, 0);
     }
 
-    private void redirectToConnectWithActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+    private void redirectToAccountCreatedActivity() {
+        Intent intent = new Intent(this, AccountCreatedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
 
     private void signOut() {
         editor.putString("email", null);
@@ -172,9 +196,9 @@ public class WaitRequestActivity extends AppCompatActivity {
     }
 
     // Redirects to the login screen
-    public void redirectToLogIn(){
-        Intent intent = new Intent(this,LogInActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+    public void redirectToLogIn() {
+        Intent intent = new Intent(this, LogInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 }
