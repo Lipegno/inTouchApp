@@ -172,8 +172,17 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(HomeActivity.this, "Disconnect", Toast.LENGTH_SHORT).show();
-                // TO DO
-                // Delete the connection between the users
+                DAOConnection.getInstance().deleteConnection(usersConnection).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        //Redirect to account created activity
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(HomeActivity.this, "Failed to disconnect from user", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
