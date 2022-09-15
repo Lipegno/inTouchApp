@@ -1,4 +1,4 @@
-package com.example.intouch;
+package com.example.intouch.requests;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.intouch.R;
 import com.example.intouch.models.User;
+import com.example.intouch.requests.WaitRequestActivity;
 
 public class SentRequestActivity extends AppCompatActivity {
 

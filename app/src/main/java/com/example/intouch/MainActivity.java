@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.intouch.auth.CreateAccountActivity;
+import com.example.intouch.auth.LogInActivity;
 import com.example.intouch.models.UserSettings;
 
 import java.util.HashSet;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Redirects to the login screen
     public void redirectToLogIn(){
-        Intent intent = new Intent(this,LogInActivity.class);
+        Intent intent = new Intent(this, LogInActivity.class);
         startActivity(intent);
     }
 

@@ -1,4 +1,4 @@
-package com.example.intouch;
+package com.example.intouch.requests;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,9 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.intouch.settings.ColorSchemePickerActivity;
+import com.example.intouch.HomeActivity;
+import com.example.intouch.MainActivity;
+import com.example.intouch.R;
 import com.example.intouch.models.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class AcceptedRequestActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.intouch;
+package com.example.intouch.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.intouch.requests.AcceptCancelRequestActivity;
+import com.example.intouch.requests.AcceptedRequestActivity;
+import com.example.intouch.HomeActivity;
+import com.example.intouch.MainActivity;
+import com.example.intouch.R;
+import com.example.intouch.requests.WaitRequestActivity;
 import com.example.intouch.dao.DAOConnection;
 import com.example.intouch.dao.DAOPendingConnection;
 import com.example.intouch.dao.DAOUser;
@@ -21,16 +27,12 @@ import com.example.intouch.models.Connection;
 import com.example.intouch.models.PendingConnection;
 import com.example.intouch.models.User;
 import com.example.intouch.helpers.Callback;
-import com.example.intouch.models.UserSettings;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class LogInActivity extends AppCompatActivity {
 

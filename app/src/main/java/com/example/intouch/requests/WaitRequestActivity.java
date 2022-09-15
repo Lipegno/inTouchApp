@@ -1,4 +1,4 @@
-package com.example.intouch;
+package com.example.intouch.requests;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.intouch.MainActivity;
+import com.example.intouch.R;
+import com.example.intouch.auth.AccountCreatedActivity;
+import com.example.intouch.auth.LogInActivity;
 import com.example.intouch.dao.DAOPendingConnection;
 import com.example.intouch.helpers.Callback;
 import com.example.intouch.models.PendingConnection;

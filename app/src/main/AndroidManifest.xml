@@ -20,16 +20,16 @@
             android:name=".AllSetActivity"
             android:exported="false" />
         <activity
-            android:name=".AcceptCancelRequestActivity"
+            android:name=".requests.AcceptCancelRequestActivity"
             android:exported="false" />
         <activity
-            android:name=".AcceptedRequestActivity"
+            android:name=".requests.AcceptedRequestActivity"
             android:exported="false" />
         <activity
-            android:name=".WaitRequestActivity"
+            android:name=".requests.WaitRequestActivity"
             android:exported="false" />
         <activity
-            android:name=".SentRequestActivity"
+            android:name=".requests.SentRequestActivity"
             android:exported="false" />
 
         <receiver
@@ -45,28 +45,28 @@
         </receiver>
 
         <activity
-            android:name=".WallpaperSideActivity"
+            android:name=".settings.WallpaperSideActivity"
             android:exported="false" />
         <activity
-            android:name=".CustomizeColorsActivity"
+            android:name=".settings.CustomizeColorsActivity"
             android:exported="false" />
         <activity
-            android:name=".ColorSchemePickerActivity"
+            android:name=".settings.ColorSchemePickerActivity"
             android:exported="false" />
         <activity
-            android:name=".GoogleSignInActivity"
+            android:name=".auth.GoogleSignInActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".LogInActivity"
+            android:name=".auth.LogInActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountCreatedActivity"
+            android:name=".auth.AccountCreatedActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateAccountActivity"
+            android:name=".auth.CreateAccountActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

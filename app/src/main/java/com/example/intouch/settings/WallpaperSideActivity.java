@@ -1,4 +1,4 @@
-package com.example.intouch;
+package com.example.intouch.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,8 +10,9 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.intouch.helpers.Callback;
-import com.example.intouch.models.UserSettings;
+import com.example.intouch.AllSetActivity;
+import com.example.intouch.MainActivity;
+import com.example.intouch.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
