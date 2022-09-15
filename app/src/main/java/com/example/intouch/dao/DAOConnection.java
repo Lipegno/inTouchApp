@@ -51,6 +51,7 @@ public class DAOConnection {
                     Connection c = connection.getValue(Connection.class);
 
                     if (c.firstUser.uid.equalsIgnoreCase(userUid) || c.secondUser.uid.equalsIgnoreCase(userUid)) {
+                        c.uID = connection.getKey();
                         onReceived.execute(c);
                         return;
                     }
@@ -66,24 +67,23 @@ public class DAOConnection {
         });
     }
 
-    public void notifyConnection(Connection connection, final Callback onNotified, final Callback onFailed) {
+    public void updateConnection(Connection connection, final Callback onUpdated, final Callback onFailed) {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                connection.notified = 1;
                 Map<String, Object> postValues = connection.toMap();
-                databaseReference.updateChildren(postValues)
+                databaseReference.child(connection.uID).updateChildren(postValues)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                onNotified.execute(null);
+                                onUpdated.execute(null);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                onFailed.execute(null);
+                                onUpdated.execute(null);
                             }
                         });
             }
@@ -95,4 +95,7 @@ public class DAOConnection {
         });
     }
 
+    public Task<Void> deleteConnection(Connection connection) {
+        return databaseReference.child(connection.uID).removeValue();
+    }
 }

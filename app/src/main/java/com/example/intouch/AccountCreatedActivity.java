@@ -136,13 +136,12 @@ public class AccountCreatedActivity extends AppCompatActivity {
                                 String senderUid = mUser.getUid();
                                 String receivingUid = user.uid;
 
-                                User sender = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString());
+                                User sender = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString(), 0);
                                 String status = "Pending";
                                 DAOPendingConnection.getInstance().add(new PendingConnection(senderUid, receivingUid, status)).addOnSuccessListener(suc -> {
                                     Toast.makeText(AccountCreatedActivity.this, "Your connection request has been made.", Toast.LENGTH_SHORT).show();
 
                                     redirectToSentRequestActivity(user);
-
                                 }).addOnFailureListener(fail -> {
                                     Toast.makeText(AccountCreatedActivity.this, "Failed to request a connection", Toast.LENGTH_SHORT).show();
                                 });

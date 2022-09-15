@@ -1,5 +1,6 @@
 package com.example.intouch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -26,6 +27,7 @@ import com.example.intouch.models.PendingConnection;
 import com.example.intouch.models.User;
 import com.example.intouch.models.UserSettings;
 import com.example.intouch.helpers.Callback;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -124,7 +126,7 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                     @Override
                     public void execute(PendingConnection pc) {
                         // Create a connection
-                        User receiver = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString());
+                        User receiver = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString(), 1);
                         String receiverUID = receiver.uid;
 
                         Connection newConnection = new Connection(receiver, sender);
@@ -136,18 +138,17 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                                 // If connection successfully added
                                 // delete the pending connection entry
                                 // and redirect the user to the Accepted Request screen
-                                daoPendingConnection.deletePendingConnectionByAUsersUid(senderUID, receiverUID, new Callback() {
+                                daoPendingConnection.deletePendingConnection(pc).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
-                                    public void execute(Object object) {
+                                    public void onSuccess(Void unused) {
                                         redirectToAcceptedRequestActivity(sender, receiver);
                                     }
-                                }, new Callback() {
+                                }).addOnFailureListener(new OnFailureListener() {
                                     @Override
-                                    public void execute(Object object) {
+                                    public void onFailure(@NonNull Exception e) {
                                         Toast.makeText(AcceptCancelRequestActivity.this, "Could not delete the pending connection.", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-
                             }
                         });
 

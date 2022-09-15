@@ -119,7 +119,7 @@ public class GoogleSignInActivity extends LogInActivity {
 
 
     private void addNewUser(String uid, String email, @NonNull Uri photoURL) {
-        User user = new User(uid, email, photoURL.toString());
+        User user = new User(uid, email, photoURL.toString(), 0);
 
         DAOUser.getInstance().add(user)
                 .addOnSuccessListener(suc -> {

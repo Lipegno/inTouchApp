@@ -6,20 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Connection {
+
+    @Exclude
+    public String uID;
+
     public User firstUser;
     public User secondUser;
-    public int notified;
 
     public Connection() {
         firstUser = new User();
         secondUser = new User();
-        notified = 0;
     }
 
     public Connection(User first, User second) {
         this.firstUser = first;
         this.secondUser = second;
-        this.notified = 0;
     }
 
     public User getFirstUser() {
@@ -38,12 +39,12 @@ public class Connection {
         this.secondUser = secondUser;
     }
 
-    public int getNotified() {
-        return notified;
+    public String getuID() {
+        return uID;
     }
 
-    public void setNotified(int notified) {
-        this.notified = notified;
+    public void setuID(String uID) {
+        this.uID = uID;
     }
 
     @Exclude
@@ -51,7 +52,6 @@ public class Connection {
         HashMap<String, Object> result = new HashMap<>();
         result.put("firstUser", firstUser);
         result.put("secondUser", secondUser);
-        result.put("notified", notified);
 
         return result;
     }

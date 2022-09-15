@@ -242,8 +242,10 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void execute(Connection connection) {
                 //  check if it is first time after request was accepted
-                if (connection.notified == 0) {
-                    DAOConnection.getInstance().notifyConnection(connection, new Callback() {
+                User currentUser = connection.firstUser.uid.equals((userUID)) ? connection.firstUser : connection.secondUser;
+                if (currentUser.notified == 0) {
+                    currentUser.notified = 1;
+                    DAOConnection.getInstance().updateConnection(connection, new Callback() {
                         @Override
                         public void execute(Object object) {
                             redirectToAcceptedRequestActivity(connection.firstUser.uid, connection.secondUser.uid);
@@ -258,8 +260,6 @@ public class LogInActivity extends AppCompatActivity {
                 } else {
                     redirectToHomeActivity();
                 }
-
-
             }
         };
     }
