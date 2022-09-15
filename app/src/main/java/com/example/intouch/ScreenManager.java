@@ -1,5 +1,7 @@
 package com.example.intouch;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
@@ -42,14 +44,17 @@ public class ScreenManager {
     public void UpdateColor(int color, Context context) {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
         try {
-            //wallpaperManager.setResource(R.drawable.wallpaper_photo);
+            String side = context.getSharedPreferences(MainActivity.MY_PREFERENCE, MODE_PRIVATE).getString("wallpaperSide","right");
 
             LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.wallpaper_image);
-            GradientDrawable gradient1 = (GradientDrawable) drawable.findDrawableByLayerId(R.id.left_rectangle);
-            gradient1.setColor(Color.parseColor("#6732CD50"));
+            GradientDrawable gradient;
 
-            GradientDrawable gradient2 = (GradientDrawable) drawable.findDrawableByLayerId(R.id.right_rectangle);
-            gradient2.setColor(Color.parseColor("#6632CD90"));
+            if(side.equals("right")){
+                gradient = (GradientDrawable) drawable.findDrawableByLayerId(R.id.right_rectangle);
+            }else{
+                gradient = (GradientDrawable) drawable.findDrawableByLayerId(R.id.left_rectangle);
+            }
+            gradient.setColor(color);
 
             int width = drawable.getIntrinsicWidth();
             int height = drawable.getIntrinsicHeight();
