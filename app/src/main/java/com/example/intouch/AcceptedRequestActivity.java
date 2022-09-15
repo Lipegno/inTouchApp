@@ -34,12 +34,12 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
 
-        String wallpaperSide = sharedpreferences.getString("wallpaperSide", null);
+        //String wallpaperSide = sharedpreferences.getString("wallpaperSide", null);
 
-        if (wallpaperSide != null) {
+        /*if (wallpaperSide != null) {
             redirectToHomeActivity();
             return;
-        }
+        }*/
 
         setContentView(R.layout.activity_accepted_request);
 
