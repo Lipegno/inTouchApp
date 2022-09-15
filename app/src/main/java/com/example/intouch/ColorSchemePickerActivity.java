@@ -1,8 +1,19 @@
 package com.example.intouch;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,17 +32,19 @@ public class ColorSchemePickerActivity extends AppCompatActivity {
     FirebaseUser mUser;
 
     RadioGroup radioGroupColorSchemePicker;
-    RadioButton radioColorScheme1;
-    RadioButton radioColorScheme2;
+    MyRadioButton radioColorScheme1;
+    MyRadioButton radioColorScheme2;
     RadioButton radioCustomizeColorScheme;
 
     Button buttonOK;
+    AppCompatButton positiveButton;
 
     ArrayList<String> colorScheme1;
     ArrayList<String> colorScheme2;
 
     ArrayList<String> selectedColorScheme;
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +64,9 @@ public class ColorSchemePickerActivity extends AppCompatActivity {
         mUser = mAuth.getCurrentUser();
 
         initializeColorSchemes();
+
+        radioColorScheme1.setColorSchemes(colorScheme1);
+        radioColorScheme2.setColorSchemes(colorScheme2);
 
         radioGroupColorSchemePicker.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -92,9 +108,9 @@ public class ColorSchemePickerActivity extends AppCompatActivity {
         colorScheme1.add("#ff2c2c");
 
         colorScheme2 = new ArrayList<String>();
-        colorScheme1.add("#bfe6ff");
-        colorScheme1.add("#e88504");
-        colorScheme1.add("#555555");
+        colorScheme2.add("#bfe6ff");
+        colorScheme2.add("#e88504");
+        colorScheme2.add("#555555");
 
         selectedColorScheme = colorScheme1;
 
