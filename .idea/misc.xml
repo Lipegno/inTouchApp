@@ -3,12 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/projects/InTouch/app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.244" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/circle_button.xml" value="0.292" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.1" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/rounded_grey_button.xml" value="0.1" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/rounded_valencia_button.xml" value="0.1" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/splitted_rectangle.xml" value="0.2765" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/splitted_rectangle_115.xml" value="0.2765" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/drawable/wallpaper_image.xml" value="0.2295" />
+        <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_accept_cancel_request.xml" value="0.23802083333333332" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_account_created.xml" value="0.25" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_accountcreated.xml" value="0.1" />
         <entry key="..\:/projects/InTouch/app/src/main/res/layout/activity_color_scheme.xml" value="0.33" />
@@ -36,18 +39,7 @@
         <entry key="app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/circle.xml" value="0.1995" />
         <entry key="app/src/main/res/drawable-v24/roundcorner.xml" value="0.1995" />
-        <entry key="app/src/main/res/layout/activity_accept_cancel_request.xml" value="0.23097826086956522" />
-        <entry key="app/src/main/res/layout/activity_accepted_request.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_account_created.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/activity_color_scheme.xml" value="0.23541666666666666" />
-        <entry key="app/src/main/res/layout/activity_connect_with.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.27309782608695654" />
-        <entry key="app/src/main/res/layout/activity_popup_window.xml" value="0.13753799392097266" />
-        <entry key="app/src/main/res/layout/activity_sent_request.xml" value="0.13753799392097266" />
-        <entry key="app/src/main/res/layout/activity_wait_request.xml" value="0.1585144927536232" />
-        <entry key="app/src/main/res/layout/home_page_and_settings.xml" value="0.27309782608695654" />
         <entry key="app/src/main/res/layout/in_touch_widget.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/popup_window.xml" value="0.13753799392097266" />
       </map>
     </option>
   </component>

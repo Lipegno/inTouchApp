@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class AcceptCancelRequestActivity extends AppCompatActivity {
 
+    // region Declarations
     Button buttonCancelRequest;
     Button buttonAcceptRequest;
 
@@ -52,17 +53,25 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
 
-    private Uri userPhotoUrl;
+    Uri userPhotoUrl;
 
     TextView popUpMessage;
     Button yesButton;
     Button cancelButton;
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_cancel_request);
 
+        // Initialization
+        initialize();
+
+    }
+
+    // region Initialization
+    private void initialize() {
         Bundle bundle = getIntent().getExtras();
         senderUID = bundle.getString("senderUID");
 
@@ -80,7 +89,6 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
 
         if (mUser != null) {
             userEmail.setText(mUser.getEmail());
-
             userPhotoUrl = mUser.getPhotoUrl();
 
             Glide.with(this)
@@ -101,6 +109,10 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
             }
         });
 
+        setClickListeners();
+    }
+
+    private void setClickListeners() {
         singOutTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,8 +126,8 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                 acceptRequest();
             }
         });
-
     }
+    // endregion
 
     // Creates a new connection and deletes the entry from pending connections
     private void acceptRequest() {

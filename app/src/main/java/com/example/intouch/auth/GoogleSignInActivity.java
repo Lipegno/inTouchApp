@@ -30,37 +30,58 @@ import com.google.firebase.storage.StorageReference;
 
 public class GoogleSignInActivity extends LogInActivity {
 
+    // region Declarations
     private static final int RC_SIGN_IN = 101;
     GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     ProgressDialog progressDialog;
-
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Initialization
+        initialize();
+
+        // Configure and start sign in with Google
+        signInWithGoogle();
+    }
+
+    // region Initialization
+    private void initialize() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Google Sign In...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+    }
+
+    private void signInWithGoogle() {
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent,RC_SIGN_IN);
     }
+    // endregion
 
+    // region Redirects
+    private void redirectToAccountCreatedActivity() {
+        Intent intent = new Intent(GoogleSignInActivity.this, AccountCreatedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    // endregion
+
+    // region Activity Results
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -79,7 +100,10 @@ public class GoogleSignInActivity extends LogInActivity {
             }
         }
     }
+    // endregion
 
+    // region SignIn with Google
+    // Performs the authentication with Google
     private void firebaseAuthWithGoogle(String idToken){
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -89,13 +113,7 @@ public class GoogleSignInActivity extends LogInActivity {
                         if(task.isSuccessful()) {
                             progressDialog.dismiss();
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            String email = user.getEmail();
-                            String uid = user.getUid();
-                            Uri photoURL = user.getPhotoUrl();
-
-                            addNewUser(uid,email,photoURL);
-
+                            addNewUser();
                         } else {
                             progressDialog.dismiss();
                             // If sign in fails, display a message to the user.
@@ -106,14 +124,13 @@ public class GoogleSignInActivity extends LogInActivity {
                 });
     }
 
-    private void redirectToAccountCreatedActivity() {
-        Intent intent = new Intent(GoogleSignInActivity.this, AccountCreatedActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+    // Adds the user in the Firebase Real-time database
+    private void addNewUser() {
+        FirebaseUser fbuser = mAuth.getCurrentUser();
+        String email = fbuser.getEmail();
+        String uid = fbuser.getUid();
+        Uri photoURL = fbuser.getPhotoUrl();
 
-
-    private void addNewUser(String uid, String email, @NonNull Uri photoURL) {
         User user = new User(uid, email, photoURL.toString(), 0);
 
         DAOUser.getInstance().add(user)
@@ -125,6 +142,5 @@ public class GoogleSignInActivity extends LogInActivity {
                     Toast.makeText(GoogleSignInActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
                 });
     }
-
-
+    // endregion
 }

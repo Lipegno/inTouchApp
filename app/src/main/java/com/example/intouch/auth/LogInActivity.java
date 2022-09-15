@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LogInActivity extends AppCompatActivity {
 
+    // region Declarations
     EditText inputEmail;
     EditText inputPassword;
     Button buttonContinueLogIn;
@@ -49,21 +50,30 @@ public class LogInActivity extends AppCompatActivity {
 
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
-
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Initialization
+        initialize();
+    }
+
+    // region Initialization
+    private void initialize() {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+
         sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
+
         progressDialog = new ProgressDialog(this);
 
         String savedEmail = sharedpreferences.getString("email", null);
         String savedPassword = sharedpreferences.getString("password", null);
 
+        // If user was previously logged in
         if (savedEmail != null && savedPassword != null) {
             PerformLogIn(savedEmail, savedPassword);
             return;
@@ -76,13 +86,29 @@ public class LogInActivity extends AppCompatActivity {
         buttonContinueLogIn = findViewById(R.id.buttonContinueLogIn);
         signUpTextView = findViewById(R.id.signUp);
 
-
         // Set the dimensions of the sign-in button.
         signInButton = findViewById(R.id.google_sign_in);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         setGoogleSignInButtonText(signInButton, "Continue with Google");
 
+        // Set click listeners
+        setClickListeners();
+    }
 
+    private void setGoogleSignInButtonText(SignInButton signInButton, String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
+    }
+
+    private void setClickListeners() {
         buttonContinueLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,28 +132,67 @@ public class LogInActivity extends AppCompatActivity {
                 redirectToCreateAccountActivity();
             }
         });
-
     }
+    //endregion
 
+    // region Redirects
     private void redirectToCreateAccountActivity() {
         Intent intent = new Intent(this, CreateAccountActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
-    private void setGoogleSignInButtonText(SignInButton signInButton, String buttonText) {
-        // Find the TextView that is inside of the SignInButton and set its text
-        for (int i = 0; i < signInButton.getChildCount(); i++) {
-            View v = signInButton.getChildAt(i);
+    private void redirectToWaitRequestActivity(User receiver) {
+        Intent intent = new Intent(this, WaitRequestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setText(buttonText);
-                return;
-            }
-        }
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("receiver", receiver);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
     }
 
+    private void redirectToAcceptCancelRequest(String senderUID) {
+        Intent intent = new Intent(this, AcceptCancelRequestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("senderUID", senderUID);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+    }
+
+    private void redirectToAcceptedRequestActivity(String firstUID, String secondUID) {
+        Intent intent = new Intent(this, AcceptedRequestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        User sender = getUserById(firstUID);
+        User receiver = getUserById(secondUID);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("sender", sender);
+        bundle.putSerializable("receiver", receiver);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+    }
+
+    private void redirectToAccountCreatedActivity() {
+        Intent intent = new Intent(this, AccountCreatedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void redirectToHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    // endregion
+
+    // region Log In
     private void PerformLogIn(String email, String password) {
 
         if (!email.matches(emailPattern)) {
@@ -216,28 +281,6 @@ public class LogInActivity extends AppCompatActivity {
         };
     }
 
-    private void redirectToWaitRequestActivity(User receiver) {
-        Intent intent = new Intent(this, WaitRequestActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("receiver", receiver);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
-    }
-
-    private void redirectToAcceptCancelRequest(String senderUID) {
-        Intent intent = new Intent(this, AcceptCancelRequestActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("senderUID", senderUID);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
-    }
-
     private Callback<Connection> hasConnection(String userUID) {
         //  If there is already a connection that includes this user ->
         return new Callback<Connection>() {
@@ -266,21 +309,6 @@ public class LogInActivity extends AppCompatActivity {
         };
     }
 
-    private void redirectToAcceptedRequestActivity(String firstUID, String secondUID) {
-        Intent intent = new Intent(this, AcceptedRequestActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        User sender = getUserById(firstUID);
-        User receiver = getUserById(secondUID);
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("sender", sender);
-        bundle.putSerializable("receiver", receiver);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
-    }
-
     private User getUserById(String firstUID) {
         User user = new User();
 
@@ -299,11 +327,11 @@ public class LogInActivity extends AppCompatActivity {
         return user;
     }
 
-    private void redirectToAccountCreatedActivity() {
-        Intent intent = new Intent(this, AccountCreatedActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    private void validateInput(@NonNull EditText input, String error) {
+        input.setError(error);
+        input.requestFocus();
     }
+    // endregion
 
     private void showProgressDialog(@NonNull ProgressDialog progressDialog) {
         progressDialog.setMessage("Please, wait while we are logging you in.");
@@ -311,16 +339,4 @@ public class LogInActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }
-
-    private void validateInput(@NonNull EditText input, String error) {
-        input.setError(error);
-        input.requestFocus();
-    }
-
-    private void redirectToHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
 }

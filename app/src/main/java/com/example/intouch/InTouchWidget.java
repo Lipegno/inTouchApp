@@ -155,8 +155,8 @@ public class InTouchWidget extends AppWidgetProvider {
         }else if(action == GRAY_COLOR_BTN){
             Log.i(TAG,"Gray Button pressed ");
             views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_white);
-            UpdateWidget(context, views);
             ScreenManager.getInstance().UpdateColor(Color.parseColor("#C3C3C3"), context);
+            UpdateWidget(context, views);
         }else if(action == GREEN_COLOR_BTN){
             Log.i(TAG,"Green Button pressed ");
             views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_green);

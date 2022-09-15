@@ -1,18 +1,25 @@
 package com.example.intouch;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.media.audiofx.DynamicsProcessing;
+import android.util.Config;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 
@@ -31,9 +38,31 @@ public class ScreenManager {
         return instance;
     }
 
+    @SuppressLint("ResourceType")
     public void UpdateColor(int color, Context context) {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
+        try {
+            //wallpaperManager.setResource(R.drawable.wallpaper_photo);
 
+            LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.wallpaper_image);
+            GradientDrawable gradient1 = (GradientDrawable) drawable.findDrawableByLayerId(R.id.left_rectangle);
+            gradient1.setColor(Color.parseColor("#6732CD50"));
+
+            GradientDrawable gradient2 = (GradientDrawable) drawable.findDrawableByLayerId(R.id.right_rectangle);
+            gradient2.setColor(Color.parseColor("#6632CD90"));
+
+            int width = drawable.getIntrinsicWidth();
+            int height = drawable.getIntrinsicHeight();
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+
+            //Bitmap bitmap2 = ((BitmapDrawable) drawable).getBitmap();
+            wallpaperManager.setBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Bitmap tintImage(Bitmap bitmap, int color) {

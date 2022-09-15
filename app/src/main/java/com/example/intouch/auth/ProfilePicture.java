@@ -29,6 +29,7 @@ public class ProfilePicture {
         void onProfilePictureUpdated();
     }
 
+    // region Declarations
     Uri filePath;
     FirebaseUser mUser;
     Uri userPhotoURL;
@@ -38,7 +39,9 @@ public class ProfilePicture {
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
     StorageReference storageReference;
+    // endregion
 
+    // region Constructors
     ProfilePicture(FirebaseUser mUser, Context context){
         this.mUser = mUser;
         this.context = context;
@@ -59,13 +62,14 @@ public class ProfilePicture {
 
         storageReference = FirebaseStorage.getInstance().getReference();
     }
+    // endregion
 
+    // region Profile Picture Update
     public void uploadImage(OnCompleteListener<Void> onCompleteListener){
         if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-
 
             String uid = mUser.getUid();
             StorageReference ref = storageReference.child("users/" + uid + "/profile_image");
@@ -110,7 +114,6 @@ public class ProfilePicture {
 
     }
 
-
     public void updateUserProfilePicture(final Uri uri, OnCompleteListener<Void> onCompleteListener) {
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(uri)
@@ -119,4 +122,5 @@ public class ProfilePicture {
         mUser.updateProfile(profileChangeRequest)
                 .addOnCompleteListener(onCompleteListener);
     }
+    // endregion
 }

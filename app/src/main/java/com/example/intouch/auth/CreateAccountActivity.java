@@ -32,8 +32,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
-    private StorageReference storageReference;
-
+    // region Declarations
     EditText inputEmail;
     EditText inputPassword;
     EditText inputConfirmPassword;
@@ -46,6 +45,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
 
+    private StorageReference storageReference;
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_account);
 
         // Initialization
+        initialize();
+    }
+
+    // region Initialization
+    private void initialize() {
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
         inputConfirmPassword = findViewById(R.id.inputConfirmPassword);
@@ -65,6 +71,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
 
+        // Set click listeners
+        setClickListeners();
+    }
+
+    private void setClickListeners() {
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,7 +83,17 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
     }
+    // endregion
 
+    // region Redirects
+    private void redirectToAccountCreatedActivity() {
+        Intent intent = new Intent(this, AccountCreatedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    // endregion
+
+    // region Sign Up
     // Performs the authentication
     private void PerformAuth() {
         String email = inputEmail.getText().toString();
@@ -145,8 +166,13 @@ public class CreateAccountActivity extends AppCompatActivity {
                 .addOnFailureListener(fail -> {
                     Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
                 });
-
     }
+
+    private void validateInput(@NonNull EditText input, String error) {
+        input.setError(error);
+        input.requestFocus();
+    }
+    // endregion
 
     private void showProgressDialog(@NonNull ProgressDialog progressDialog) {
         progressDialog.setMessage("Please, wait while we are creating your account.");
@@ -154,16 +180,4 @@ public class CreateAccountActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }
-
-    private void validateInput(@NonNull EditText input, String error) {
-        input.setError(error);
-        input.requestFocus();
-    }
-
-    private void redirectToAccountCreatedActivity() {
-        Intent intent = new Intent(this, AccountCreatedActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
 }
