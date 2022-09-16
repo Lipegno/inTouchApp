@@ -21,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.intouch.auth.AccountCreatedActivity;
 import com.example.intouch.auth.LogInActivity;
+import com.example.intouch.auth.ProfilePicture;
 import com.example.intouch.dao.DAOConnection;
 import com.example.intouch.helpers.Callback;
 import com.example.intouch.models.Connection;
@@ -42,11 +44,8 @@ import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private interface PictureListener {
-        void onProfilePictureUpdated();
-    }
-
-    private PictureListener pictureListener;
+    // region Declarations
+    ProfilePicture.PictureListener pictureListener;
     private StorageReference storageReference;
 
     TextView userEmailTextView;
@@ -79,12 +78,19 @@ public class HomeActivity extends AppCompatActivity {
     private Uri filePath;
     private Uri userPhotoUrl;
     private final int PICK_IMAGE = 100;
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page_and_settings);
 
+        // Initialization
+        initialize();
+    }
+
+    // region Initialize
+    private void initialize() {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
@@ -123,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setOnClickListeners();
 
-        pictureListener = new PictureListener() {
+        pictureListener = new ProfilePicture.PictureListener(){
             @Override
             public void onProfilePictureUpdated() {
                 Uri uri = mUser.getPhotoUrl();
@@ -131,33 +137,6 @@ public class HomeActivity extends AppCompatActivity {
                 Glide.with(HomeActivity.this).load(uri.toString()).into(userImageView);
             }
         };
-
-    }
-
-    private void getUsersConnection(String uid) {
-        DAOConnection.getInstance().getConnectionByAUserUid(mUser.getUid(), new Callback<Connection>() {
-            @Override
-            public void execute(Connection connection) {
-                usersConnection = connection;
-                if (connection.firstUser.uid.equals(mUser.getUid())) {
-                    partner = usersConnection.secondUser;
-                } else {
-                    partner = usersConnection.firstUser;
-                }
-
-                setPartnersContent(partner);
-            }
-        }, new Callback() {
-            @Override
-            public void execute(Object object) {
-
-            }
-        });
-    }
-
-    private void setPartnersContent(User partner) {
-        partnerEmailTextView.setText(partner.email);
-        Glide.with(HomeActivity.this).load(partner.photoURL).into(partnerImageView);
     }
 
     private void setOnClickListeners() {
@@ -245,6 +224,65 @@ public class HomeActivity extends AppCompatActivity {
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            filePath = data.getData();
+
+            ProfilePicture profilePicture = new ProfilePicture(filePath, userPhotoUrl, mUser, pictureListener, HomeActivity.this);
+            profilePicture.uploadImage(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(HomeActivity.this, "Picture updated", Toast.LENGTH_SHORT).show();
+                        pictureListener.onProfilePictureUpdated();
+                    }
+                }
+            });
+        }
+    }
+    // endregion
+
+    // region Redirects
+    // Redirects to the login screen
+    public void redirectToLogIn() {
+        Intent intent = new Intent(this, LogInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    // endregion
+
+    // region Connection
+    private void getUsersConnection(String uid) {
+        DAOConnection.getInstance().getConnectionByAUserUid(mUser.getUid(), new Callback<Connection>() {
+            @Override
+            public void execute(Connection connection) {
+                usersConnection = connection;
+                if (connection.firstUser.uid.equals(mUser.getUid())) {
+                    partner = usersConnection.secondUser;
+                } else {
+                    partner = usersConnection.firstUser;
+                }
+
+                setPartnersContent(partner);
+            }
+        }, new Callback() {
+            @Override
+            public void execute(Object object) {
+
+            }
+        });
+    }
+
+    private void setPartnersContent(User partner) {
+        partnerEmailTextView.setText(partner.email);
+        Glide.with(HomeActivity.this).load(partner.photoURL).into(partnerImageView);
+    }
+    // endregion
+
+    // region Sign out
     private void showSignOutPopUp(View view) {
         // Inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -299,92 +337,5 @@ public class HomeActivity extends AppCompatActivity {
         mAuth.signOut();
         redirectToLogIn();
     }
-
-    // Redirects to the login screen
-    public void redirectToLogIn() {
-        Intent intent = new Intent(this, LogInActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            filePath = data.getData();
-
-            uploadImage();
-        }
-    }
-
-    private void uploadImage() {
-
-        if (filePath != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
-
-            String uid = mUser.getUid();
-            StorageReference ref = storageReference.child("users/" + uid + "/profile_image");
-
-            if (ref != null) {
-                Toast.makeText(this, "" + ref, Toast.LENGTH_SHORT).show();
-            }
-
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Reference to default image file in Cloud Storage
-                            // refactor this
-                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    updateUserProfilePicture(uri);
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            Toast.makeText(HomeActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(HomeActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                        }
-                    });
-
-        }
-    }
-
-    private void updateUserProfilePicture(final Uri uri) {
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                .setPhotoUri(uri)
-                .build();
-
-        mUser.updateProfile(profileChangeRequest)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(HomeActivity.this, "Picture updated", Toast.LENGTH_SHORT).show();
-                            pictureListener.onProfilePictureUpdated();
-                        }
-                    }
-                });
-    }
-
-
+    // endregion
 }

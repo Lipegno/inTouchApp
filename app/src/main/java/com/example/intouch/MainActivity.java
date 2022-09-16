@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         // Set default app settings
         UserSettings userSettings = new UserSettings();
 
-        //Set the values
+        // Set the values
         Set<String> colorSchemeSet = new HashSet<String>(userSettings.colorScheme);
         editor.putStringSet("colorSchemeSet", colorSchemeSet);
 

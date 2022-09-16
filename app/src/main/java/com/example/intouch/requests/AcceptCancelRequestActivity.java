@@ -129,6 +129,28 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
     }
     // endregion
 
+    // region Redirects
+    private void redirectToAcceptedRequestActivity(User sender, User receiver) {
+        Intent intent = new Intent(this, AcceptedRequestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("sender", sender);
+        bundle.putSerializable("receiver", receiver);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+    }
+
+    // Redirects to the login screen
+    public void redirectToLogIn() {
+        Intent intent = new Intent(this, LogInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    // endregion
+
+    // region Accept request
     // Creates a new connection and deletes the entry from pending connections
     private void acceptRequest() {
 
@@ -176,19 +198,9 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                     }
                 });
     }
+    // endregion
 
-    private void redirectToAcceptedRequestActivity(User sender, User receiver) {
-        Intent intent = new Intent(this, AcceptedRequestActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("sender", sender);
-        bundle.putSerializable("receiver", receiver);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
-    }
-
+    // region Sign out
     private void showSignOutPopUp(View view) {
         // Inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -242,11 +254,5 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
         mAuth.signOut();
         redirectToLogIn();
     }
-
-    // Redirects to the login screen
-    public void redirectToLogIn() {
-        Intent intent = new Intent(this, LogInActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+    // endregion
 }

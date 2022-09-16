@@ -19,6 +19,7 @@ import com.example.intouch.models.User;
 
 public class AcceptedRequestActivity extends AppCompatActivity {
 
+    // region Declarations
     ImageView firstUserImageView;
     ImageView secondUserImageView;
     User firstUser;
@@ -28,11 +29,32 @@ public class AcceptedRequestActivity extends AppCompatActivity {
 
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Initialization
+        initialize();
+    }
+
+    // region Redirects
+    private void redirectToHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void redirectToColorSchemePickerActivity(User firstUser, User secondUser) {
+        Intent intent = new Intent(this, ColorSchemePickerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    // endregion
+
+    // region Initialization
+    private void initialize() {
         sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
 
@@ -55,7 +77,6 @@ public class AcceptedRequestActivity extends AppCompatActivity {
             firstUser = (User) bundle.getSerializable("sender");
             secondUser = (User) bundle.getSerializable("receiver");
 
-
             Glide.with(this)
                     .load(firstUser.photoURL)
                     .into(firstUserImageView);
@@ -65,24 +86,16 @@ public class AcceptedRequestActivity extends AppCompatActivity {
                     .into(secondUserImageView);
         }
 
+        setClickListeners();
+    }
+
+    private void setClickListeners() {
         buttonLetsStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 redirectToColorSchemePickerActivity(firstUser, secondUser);
             }
         });
-
     }
-
-    private void redirectToHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
-    private void redirectToColorSchemePickerActivity(User firstUser, User secondUser) {
-        Intent intent = new Intent(this, ColorSchemePickerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+    // endregion
 }

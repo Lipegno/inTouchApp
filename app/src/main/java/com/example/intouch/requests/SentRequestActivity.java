@@ -12,16 +12,22 @@ import com.example.intouch.models.User;
 import com.example.intouch.requests.WaitRequestActivity;
 
 public class SentRequestActivity extends AppCompatActivity {
-
+    // region Declarations
     Button buttonOK;
-
     User receiver;
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sent_request);
 
+        // Initialization
+        initialize();
+    }
+
+    // region Initialize
+    private void initialize() {
         buttonOK = findViewById(R.id.buttonOKSentRequest);
 
         Bundle bundle = getIntent().getExtras();
@@ -29,6 +35,10 @@ public class SentRequestActivity extends AppCompatActivity {
             receiver = (User) bundle.getSerializable("receiver");
         }
 
+        setClickListeners();
+    }
+
+    private void setClickListeners() {
         buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,7 +46,9 @@ public class SentRequestActivity extends AppCompatActivity {
             }
         });
     }
+    // endregion
 
+    // region Redirects
     private void redirectToWaitRequestActivity() {
         Intent intent = new Intent(this, WaitRequestActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -47,4 +59,5 @@ public class SentRequestActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+    // endregion
 }

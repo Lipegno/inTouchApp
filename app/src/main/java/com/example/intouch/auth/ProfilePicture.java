@@ -50,7 +50,7 @@ public class ProfilePicture {
         this.pictureListener = null;
     }
 
-    ProfilePicture(Uri filePath, Uri userPhotoURL, FirebaseUser mUser, PictureListener pictureListener, Context context){
+    public ProfilePicture(Uri filePath, Uri userPhotoURL, FirebaseUser mUser, PictureListener pictureListener, Context context){
         this.filePath = filePath;
         this.userPhotoURL = userPhotoURL;
         this.mUser = mUser;

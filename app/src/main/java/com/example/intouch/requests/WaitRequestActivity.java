@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class WaitRequestActivity extends AppCompatActivity {
 
+    // region Declarations
     ImageView userImageView;
     TextView userEmailTextView;
     TextView waitingRequestTextView;
@@ -52,13 +53,19 @@ public class WaitRequestActivity extends AppCompatActivity {
 
     private Uri userPhotoUrl;
     User receiver;
-
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait_request);
 
+        // Initialization
+        initialize();
+    }
+
+    // region Initialize
+    private void initialize() {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         sharedpreferences = getSharedPreferences(MainActivity.MY_PREFERENCE, Context.MODE_PRIVATE);
@@ -85,6 +92,10 @@ public class WaitRequestActivity extends AppCompatActivity {
 
         }
 
+        setClickListeners();
+    }
+
+    private void setClickListeners() {
         buttonCancelRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,9 +114,25 @@ public class WaitRequestActivity extends AppCompatActivity {
                 showPopUp(view, "signout");
             }
         });
+    }
+    // endregion
 
+    //region Redirects
+    private void redirectToAccountCreatedActivity() {
+        Intent intent = new Intent(this, AccountCreatedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
+    // Redirects to the login screen
+    public void redirectToLogIn() {
+        Intent intent = new Intent(this, LogInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    // endregion
+
+    // region Sign out
     private void showPopUp(View view, String action) {
         // Inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -184,12 +211,6 @@ public class WaitRequestActivity extends AppCompatActivity {
         popupWindow.showAtLocation(findViewById(R.id.userEmailWaitRequest), Gravity.CENTER, 0, 0);
     }
 
-    private void redirectToAccountCreatedActivity() {
-        Intent intent = new Intent(this, AccountCreatedActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
     private void signOut() {
         editor.putString("email", null);
         editor.putString("password", null);
@@ -198,11 +219,5 @@ public class WaitRequestActivity extends AppCompatActivity {
         mAuth.signOut();
         redirectToLogIn();
     }
-
-    // Redirects to the login screen
-    public void redirectToLogIn() {
-        Intent intent = new Intent(this, LogInActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+    // endregion
 }
