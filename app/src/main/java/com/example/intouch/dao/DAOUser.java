@@ -2,7 +2,7 @@ package com.example.intouch.dao;
 
 import androidx.annotation.NonNull;
 
-import com.example.intouch.models.User;
+import com.example.intouch.dbmodels.User;
 import com.example.intouch.helpers.Callback;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;

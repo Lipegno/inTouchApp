@@ -1,4 +1,4 @@
-package com.example.intouch.models;
+package com.example.intouch.dbmodels;
 
 import com.google.firebase.database.Exclude;
 

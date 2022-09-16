@@ -2,10 +2,8 @@ package com.example.intouch.dao;
 
 import androidx.annotation.NonNull;
 
-import com.example.intouch.models.PendingConnection;
+import com.example.intouch.dbmodels.PendingConnection;
 import com.example.intouch.helpers.Callback;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

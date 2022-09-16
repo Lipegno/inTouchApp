@@ -8,8 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.intouch.R;
-import com.example.intouch.models.User;
-import com.example.intouch.requests.WaitRequestActivity;
+import com.example.intouch.dbmodels.User;
 
 public class SentRequestActivity extends AppCompatActivity {
     // region Declarations

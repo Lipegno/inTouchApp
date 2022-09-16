@@ -15,7 +15,7 @@ import com.example.intouch.settings.ColorSchemePickerActivity;
 import com.example.intouch.HomeActivity;
 import com.example.intouch.MainActivity;
 import com.example.intouch.R;
-import com.example.intouch.models.User;
+import com.example.intouch.dbmodels.User;
 
 public class AcceptedRequestActivity extends AppCompatActivity {
 
