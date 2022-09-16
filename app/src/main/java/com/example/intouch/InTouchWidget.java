@@ -174,6 +174,10 @@ public class InTouchWidget extends AppWidgetProvider {
 
                         views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.heart_emoji));
                         UpdateWidget(context, views);
+
+                        /// Send notification to the user
+                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.heart_emoji));
+                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -200,6 +204,10 @@ public class InTouchWidget extends AppWidgetProvider {
 
                         views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.cry_emoji));
                         UpdateWidget(context, views);
+
+                        /// Send notification to the user
+                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.cry_emoji));
+                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -226,6 +234,10 @@ public class InTouchWidget extends AppWidgetProvider {
 
                         views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.hug_emoji));
                         UpdateWidget(context, views);
+
+                        /// Send notification to the user
+                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.hug_emoji));
+                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -252,6 +264,10 @@ public class InTouchWidget extends AppWidgetProvider {
 
                         views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.muscle_emoji));
                         UpdateWidget(context, views);
+
+                        /// Send notification to the user
+                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.muscle_emoji));
+                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -278,6 +294,10 @@ public class InTouchWidget extends AppWidgetProvider {
                         views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_pink);
                         UpdateWidget(context, views);
                         ScreenManager.getInstance().UpdateColor(Color.parseColor("#66ff2d55"), context);
+
+                        /// Send notification to the user
+                        FCMNotification notification = GenerateNewNotification(connection, "mood", "negative");
+                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -334,6 +354,10 @@ public class InTouchWidget extends AppWidgetProvider {
                         views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_green);
                         UpdateWidget(context, views);
                         ScreenManager.getInstance().UpdateColor(Color.parseColor("#6672a682"), context);
+
+                        /// Send notification to the user
+                        FCMNotification notification = GenerateNewNotification(connection, "mood", "positive");
+                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
