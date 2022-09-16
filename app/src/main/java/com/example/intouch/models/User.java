@@ -6,17 +6,19 @@ public class User implements Serializable {
     public String uid;
     public String email;
     public String photoURL;
+    public String deviceToken;
     public int notified;
 
     public User(){
         this.notified = 0;
     }
 
-    public User(String uid, String email, String photoURL, int notified) {
+    public User(String uid, String email, String photoURL, int notified, String deviceToken) {
         this.uid = uid;
         this.email = email;
         this.photoURL = photoURL;
         this.notified = notified;
+        this.deviceToken = deviceToken;
     }
 
     public String getEmail() {
@@ -45,5 +47,13 @@ public class User implements Serializable {
 
     public void setNotified(int notified) {
         this.notified = notified;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 }

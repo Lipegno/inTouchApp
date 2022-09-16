@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.intouch.MainActivity;
 import com.example.intouch.R;
+import com.example.intouch.auth.CreateAccountActivity;
 import com.example.intouch.auth.LogInActivity;
 import com.example.intouch.dao.DAOConnection;
 import com.example.intouch.dao.DAOPendingConnection;
@@ -29,10 +30,13 @@ import com.example.intouch.models.Connection;
 import com.example.intouch.models.PendingConnection;
 import com.example.intouch.models.User;
 import com.example.intouch.helpers.Callback;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class AcceptCancelRequestActivity extends AppCompatActivity {
 
@@ -50,6 +54,7 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    String deviceToken;
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
 
@@ -95,6 +100,21 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                     .load(userPhotoUrl)
                     .into(userImageView);
         }
+
+        // region Code snippet to take the device registration token on account creation
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(AcceptCancelRequestActivity.this, "Fetching FCM registration token failed: " + task.getException() , Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        deviceToken = task.getResult();
+                    }
+                });
 
         DAOUser.getInstance().getUserById(senderUID, new Callback<User>() {
             @Override
@@ -162,7 +182,7 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
                     @Override
                     public void execute(PendingConnection pc) {
                         // Create a connection
-                        User receiver = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString(), 1);
+                        User receiver = new User(mUser.getUid(), mUser.getEmail(), mUser.getPhotoUrl().toString(), 1, deviceToken);
                         String receiverUID = receiver.uid;
 
                         Connection newConnection = new Connection(receiver, sender);

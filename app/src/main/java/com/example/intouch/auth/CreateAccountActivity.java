@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -118,22 +119,46 @@ public class CreateAccountActivity extends AppCompatActivity {
                         editor.putString("email", email);
                         editor.putString("password", password);
                         editor.apply();
-
                         mUser = task.getResult().getUser();
-                        String email = mUser.getEmail();
-                        String uid = mUser.getUid();
 
-                        // Set also the default profile image
-                        // Reference to default image file in Cloud Storage
-                        storageReference.child("images/profile_image.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                addNewUser(uid, email, uri);
-                            }
-                        });
+                        // region Code snippet to take the device registration token on account creation
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<String> task) {
+                                        if (!task.isSuccessful()) {
+                                            Toast.makeText(CreateAccountActivity.this, "Fetching FCM registration token failed: " + task.getException() , Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        String email = mUser.getEmail();
+                                        String uid = mUser.getUid();
+
+                                        // Get new FCM registration token
+                                        String deviceToken = task.getResult();
+
+                                        // Log and toast
+                                        Toast.makeText(CreateAccountActivity.this, "Your device registration token"+deviceToken, Toast.LENGTH_SHORT).show();
+                                        System.out.println("Your device registration token"+deviceToken);
+
+
+                                        // Set also the default profile image
+                                        // Reference to default image file in Cloud Storage
+                                        storageReference.child("images/profile_image.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                addNewUser(uid, email, uri, deviceToken);
+                                            }
+                                        });
+
+                                    }
+                                });
+
+                        // endregion
+
+
 
                         progressDialog.dismiss();
-
 
                     } else {
                         progressDialog.dismiss();
@@ -144,8 +169,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
     }
 
-    private void addNewUser(String uid, String email, @NonNull Uri photoURL) {
-        User user = new User(uid, email, photoURL.toString(), 0);
+    private void addNewUser(String uid, String email, @NonNull Uri photoURL, String deviceToken) {
+        User user = new User(uid, email, photoURL.toString(), 0, deviceToken);
 
         DAOUser.getInstance().add(user)
                 .addOnSuccessListener(suc -> {

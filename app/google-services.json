@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1001183250737",
+    "firebase_url": "https://intouch-e6f0a-default-rtdb.firebaseio.com",
     "project_id": "intouch-e6f0a",
     "storage_bucket": "intouch-e6f0a.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1001183250737-koggb88p0g9gcvppe5pptvg9kifind60.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.intouch",
+            "certificate_hash": "4ebe73ec5aed940e5970c9bf78bf2743af09cc85"
+          }
+        },
         {
           "client_id": "1001183250737-20naqu1ofr5tfms0798bunb15818ti5c.apps.googleusercontent.com",
           "client_type": 3

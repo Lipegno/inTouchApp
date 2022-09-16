@@ -12,6 +12,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toast;
+
+import com.example.intouch.dao.DAOConnection;
+import com.example.intouch.helpers.Callback;
+import com.example.intouch.models.Connection;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Implementation of App Widget functionality.
@@ -157,6 +164,32 @@ public class InTouchWidget extends AppWidgetProvider {
             views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_white);
             ScreenManager.getInstance().UpdateColor(Color.parseColor("#66C3C3C3"), context);
             UpdateWidget(context, views);
+
+            // modify the class to send the correct mood for each color
+            String title = "mood";
+            String message = "positive";
+
+            if(!title.equals("") && !message.equals("")){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                DAOConnection.getInstance().getConnectionByAUserUid(user.getUid(), new Callback<Connection>() {
+                    @Override
+                    public void execute(Connection connection) {
+                        if(connection.firstUser.uid.equals(user.getUid())){
+                            FCMSend.pushNotification(context, connection.secondUser.deviceToken, title, message);
+                        }else{
+                            FCMSend.pushNotification(context, connection.firstUser.deviceToken, title, message);
+                        }
+
+                    }
+                }, new Callback() {
+                    @Override
+                    public void execute(Object object) {
+                        Toast.makeText(context, "Error on getting connection.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
         }else if(action == GREEN_COLOR_BTN){
             Log.i(TAG,"Green Button pressed ");
             views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_green);

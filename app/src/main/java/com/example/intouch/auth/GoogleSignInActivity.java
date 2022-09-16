@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -131,16 +133,34 @@ public class GoogleSignInActivity extends LogInActivity {
         String uid = fbuser.getUid();
         Uri photoURL = fbuser.getPhotoUrl();
 
-        User user = new User(uid, email, photoURL.toString(), 0);
+        // region Code snippet to take the device registration token on account creation
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(GoogleSignInActivity.this, "Fetching FCM registration token failed: " + task.getException() , Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-        DAOUser.getInstance().add(user)
-                .addOnSuccessListener(suc -> {
-                    Toast.makeText(GoogleSignInActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
-                    redirectToAccountCreatedActivity();
-                })
-                .addOnFailureListener(fail -> {
-                    Toast.makeText(GoogleSignInActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
+                        // Get new FCM registration token
+                        String deviceToken = task.getResult();
+
+                        User user = new User(uid, email, photoURL.toString(), 0, deviceToken);
+
+                        DAOUser.getInstance().add(user)
+                                .addOnSuccessListener(suc -> {
+                                    Toast.makeText(GoogleSignInActivity.this, "User entity added", Toast.LENGTH_SHORT).show();
+                                    redirectToAccountCreatedActivity();
+                                })
+                                .addOnFailureListener(fail -> {
+                                    Toast.makeText(GoogleSignInActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();
+                                });
+                    }
                 });
+
+        // endregion
+
     }
     // endregion
 }
