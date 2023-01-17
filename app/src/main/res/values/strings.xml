@@ -42,7 +42,7 @@
     <string name="app_widget_description">This is an app widget description</string>
     <string name="appwidget_left_text">left</string>
     <string name="appwidget_right_text">right</string>
-    <string name="heart_emoji">&#128525;</string>
+    <string name="heart_emoji">❤️</string>
     <string name="hug_emoji">&#129303;</string>
     <string name="cry_emoji">&#128546;</string>
     <string name="muscle_emoji">&#128170;</string>

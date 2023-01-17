@@ -4,7 +4,8 @@ style="@style/Widget.InTouch.AppWidget.Container"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:orientation="vertical"
-android:background="@android:color/transparent"
+android:background="#00000000"
+android:padding="10sp"
 android:theme="@style/Theme.InTouch.AppWidgetContainer">
 
 <RelativeLayout
@@ -88,6 +89,15 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <Button
+        android:id="@+id/right_button_emoji"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:text="@string/hug_emoji"
+        android:textSize="25sp"/>
+
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -108,24 +118,10 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
                 android:translationZ="1dp"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/left_button_emoji"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="27dp"
-                android:background="@android:color/transparent"
-                android:text=""
-                android:textSize="15sp"
-                android:translationZ="90dp"
-                android:elevation="10dp"/>
-        </LinearLayout>
     </FrameLayout>
 
     <FrameLayout
+        android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -143,16 +139,15 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
                 android:textStyle="bold|italic"
                 android:translationZ="1dp"/>
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/right_button_emoji"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginLeft="47dp"
-                android:layout_marginTop="27dp"
+                android:id="@+id/left_button_emoji"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="24dp"
+                android:gravity="center"
                 android:background="@android:color/transparent"
                 android:text="@string/hug_emoji"
                 android:textSize="15sp"

@@ -1,17 +1,26 @@
 package com.example.intouch;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.intouch.auth.CreateAccountActivity;
 import com.example.intouch.auth.LogInActivity;
 import com.example.intouch.models.UserSettings;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
     public static final String MY_PREFERENCE = "InTouch";
+
 
     // Checks if it the first time that the app is opened and displays the "Welcome" screen
     // if not, it redirects the user to the login page
@@ -36,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +67,25 @@ public class MainActivity extends AppCompatActivity {
         editor.putStringSet("emojisSet", emojisSet);
         editor.putString("wallpaperSide", "right");
         editor.commit();
+
+        if(!foregroundServiceRunning()) {
+            Intent serviceIntent = new Intent(this,
+                    InTouchAppService.class);
+            startForegroundService(serviceIntent);
+        }
+
     }
+
+    public boolean foregroundServiceRunning(){
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if(InTouchAppService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // Redirects to the login screen
     public void redirectToLogIn(){

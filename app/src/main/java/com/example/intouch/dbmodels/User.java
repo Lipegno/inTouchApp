@@ -3,6 +3,8 @@ package com.example.intouch.dbmodels;
 import java.io.Serializable;
 
 public class User implements Serializable {
+
+    public String key;
     public String uid;
     public String email;
     public String photoURL;
@@ -55,5 +57,13 @@ public class User implements Serializable {
 
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

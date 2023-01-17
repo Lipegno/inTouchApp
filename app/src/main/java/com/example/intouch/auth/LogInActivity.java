@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,8 +34,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LogInActivity extends AppCompatActivity {
+
+    private final static String TAG = "LogInActivity";
 
     // region Declarations
     EditText inputEmail;
@@ -201,7 +205,7 @@ public class LogInActivity extends AppCompatActivity {
             validateInput(inputPassword, "Please, enter a password.");
         } else {
             showProgressDialog(progressDialog);
-
+            final FirebaseUser newUser;
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -215,22 +219,48 @@ public class LogInActivity extends AppCompatActivity {
                         String userUID = user.getUid();
 
                         // Check if user is in a connection
-
                         DAOConnection.getInstance().getConnectionByAUserUid(userUID,
                                 //  If there is already a connection that includes this user ->
                                 hasConnection(userUID),
                                 //  If there is no connection that includes this user ->
                                 hasNoConnection(userUID));
-
-
+                        Log.i(TAG,"USER ID: "+userUID);
                         progressDialog.dismiss();
+                        //update the token if needed
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<String> task) {
+                                        if (!task.isSuccessful()) {
+                                            Toast.makeText(LogInActivity.this, "Fetching FCM registration token failed: " + task.getException() , Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        // Get new FCM registration token
+                                        // You will get the same if it is not changed
+                                        String newDeviceToken = task.getResult();
+
+                                        // Log and toast
+                                        Toast.makeText(LogInActivity.this, "Your device registration token "+newDeviceToken, Toast.LENGTH_SHORT).show();
+                                        System.out.println("Your device registration token "+newDeviceToken);
+
+
+                                        User receiver = new User(user.getUid(), user.getEmail(), user.getPhotoUrl().toString(), 1, newDeviceToken);
+                                        DAOUser.getInstance().update(receiver);
+                                        //DAOUser.getInstance.updateUser(user);
+                                    }
+                                });
 
                     } else {
                         progressDialog.dismiss();
+                        Log.i(TAG,task.getException().toString());
                         Toast.makeText(LogInActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
+
+
+
         }
     }
 
@@ -268,7 +298,6 @@ public class LogInActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(LogInActivity.this, "User id does not match to receiver nor sender.", Toast.LENGTH_SHORT).show();
                                 }
-
                             }
                         },
                         new Callback() {

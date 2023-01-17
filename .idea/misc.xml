@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.19446415897799857" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.244" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/circle_button.xml" value="0.292" />
         <entry key="..\:/projects/InTouch/app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.1" />
@@ -38,8 +39,30 @@
         <entry key="app/src/main/res/drawable-v21/app_widget_background.xml" value="0.105" />
         <entry key="app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/circle.xml" value="0.1995" />
+        <entry key="app/src/main/res/drawable-v24/circle_green.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable-v24/circle_orange.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable-v24/circle_pink.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2215" />
         <entry key="app/src/main/res/drawable-v24/roundcorner.xml" value="0.1995" />
-        <entry key="app/src/main/res/layout/in_touch_widget.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/circle_button.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable/ic_user_icon_black.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable/rounded_grey_button.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable/rounded_valencia_button.xml" value="0.2215" />
+        <entry key="app/src/main/res/drawable/triangle.xml" value="0.3975" />
+        <entry key="app/src/main/res/drawable/triangle_left.xml" value="0.2125" />
+        <entry key="app/src/main/res/drawable/triangle_left_2.xml" value="0.4485" />
+        <entry key="app/src/main/res/drawable/triangle_right.xml" value="0.3975" />
+        <entry key="app/src/main/res/drawable/triangle_right_2.xml" value="0.4485" />
+        <entry key="app/src/main/res/drawable/wallpaper_image.xml" value="0.2145" />
+        <entry key="app/src/main/res/drawable/wallpaper_imageV2.xml" value="0.3975" />
+        <entry key="app/src/main/res/drawable/wallpaper_image_v2.xml" value="0.2125" />
+        <entry key="app/src/main/res/layout/activity_accept_cancel_request.xml" value="0.49583333333333335" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.20606884057971014" />
+        <entry key="app/src/main/res/layout/home_page_and_settings.xml" value="0.20606884057971014" />
+        <entry key="app/src/main/res/layout/in_touch_widget.xml" value="0.3680343627929688" />
+        <entry key="app/src/main/res/layout/in_touch_widget_old.xml" value="0.5369791666666667" />
       </map>
     </option>
   </component>
@@ -49,5 +72,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3680343627929688" />
+      </ProjectState>
+    </option>
   </component>
 </project>

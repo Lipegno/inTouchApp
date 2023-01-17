@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -117,7 +119,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                         editor.putString("password", password);
                         editor.apply();
                         mUser = task.getResult().getUser();
-
+                        Log.i("CreateAccountActivity",task.getResult().getUser().getUid());
                         // region Code snippet to take the device registration token on account creation
                         FirebaseMessaging.getInstance().getToken()
                                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -150,11 +152,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
                                     }
                                 });
-
                         // endregion
-
-
-
                         progressDialog.dismiss();
 
                     } else {
@@ -184,6 +182,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                             }
                         }
                     });
+
                 })
                 .addOnFailureListener(fail -> {
                     Toast.makeText(CreateAccountActivity.this, "Failed to add user entity", Toast.LENGTH_SHORT).show();

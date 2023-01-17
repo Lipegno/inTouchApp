@@ -31,11 +31,10 @@ public class FCMSend {
         try {
             JSONObject json = new JSONObject();
             json.put("to", token);
-
             JSONObject notification = new JSONObject();
             notification.put("title", title);
             notification.put("body", message);
-            json.put("notification", notification);
+            json.put("data", notification);
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, BASE_URL, json, new Response.Listener<JSONObject>(){
                 @Override
