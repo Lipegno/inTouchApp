@@ -38,8 +38,8 @@ public class InTouchWidget extends AppWidgetProvider {
     public static String WIDGET_BUTTON = "WIDGET_BUTTON";
     public static String WIDGET_PARTNER_MOOD_CHANGE = "WIDGET_PARTNER_MOOD_CHANGE";
     public static String WIDGET_MY_MOOD_CHANGE = "WIDGET_MY_MOOD_CHANGE";
-    public static String WIDGET_EMOJI_CHANGE = "WIDGET_EMOJI_CHANGE";
-    public static String WIDGET_MY_EMOJI_CHANGE = "WIDGET_MY_EMOJI_CHANGE";
+    public static String WIDGET_MY_EMOJI_CHANGE = "WIDGET_EMOJI_CHANGE";
+    public static String WIDGET_PARTNER_EMOJI_CHANGE = "WIDGET_MY_EMOJI_CHANGE";
 
 
     private static final String TAG = "InTouchWidget";
@@ -92,8 +92,8 @@ public class InTouchWidget extends AppWidgetProvider {
         //views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // setting up the widgets again for some reason
-        setupOnClickListener(views,context,R.id.appwidget_left_button,appWidgetId,LEFT_BTN);
-        setupOnClickListener(views,context,R.id.left_button_emoji,appWidgetId,RIGHT_BTN);
+        setupOnClickListener(views,context,R.id.appwidget_mood_button,appWidgetId,LEFT_BTN);
+        setupOnClickListener(views,context,R.id.right_emoji_btn,appWidgetId,RIGHT_BTN);
         setupOnClickListener(views,context,R.id.heart_button,appWidgetId,HEART_BTN);
         setupOnClickListener(views,context,R.id.cry_button,appWidgetId,CRY_BTN);
         setupOnClickListener(views,context,R.id.hug_button,appWidgetId,HUG_BTN);
@@ -144,7 +144,7 @@ public class InTouchWidget extends AppWidgetProvider {
         }
         if(intent.getAction().equals(WIDGET_PARTNER_MOOD_CHANGE)){
             handlePartnerMoodChange(bundle.getString("mood"),context);
-        }else if(intent.getAction().equals(WIDGET_EMOJI_CHANGE)){
+        }else if(intent.getAction().equals(WIDGET_MY_EMOJI_CHANGE)){
             handlePartnerEmojiChange(bundle.getString("emoji"),context);
         }
         else if(command == RIGHT_BTN){
@@ -182,15 +182,16 @@ public class InTouchWidget extends AppWidgetProvider {
         hideLayouts(views);
         sharedpreferences  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
         sharedpreferences.edit().putString(WIDGET_PARTNER_MOOD_CHANGE,mood).apply();
+        sharedpreferences.edit().putString(WIDGET_PARTNER_EMOJI_CHANGE,"").apply();
 
         if(mood.equals("positive")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_green);
+            views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_green);
             UpdateWidget(context, views);
         }else if(mood.equals("negative")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_pink);
+            views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_pink);
             UpdateWidget(context, views);
         }else if(mood.equals("neutral")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_white);
+            views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_white);
             UpdateWidget(context, views);
         }
 
@@ -200,19 +201,22 @@ public class InTouchWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.in_touch_widget);
         hideLayouts(views);
         sharedpreferences  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-        sharedpreferences.edit().putString(WIDGET_MY_EMOJI_CHANGE,emoji).apply();
+        sharedpreferences.edit().putString(WIDGET_PARTNER_EMOJI_CHANGE,emoji).apply();
 
         if(emoji.equals(context.getResources().getString(R.string.cry_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.cry_emoji));
+            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.cry_emoji));
             UpdateWidget(context, views);
         }else if(emoji.equals(context.getResources().getString(R.string.heart_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.heart_emoji));
+            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.heart_emoji));
             UpdateWidget(context, views);
         }else if(emoji.equals(context.getResources().getString(R.string.hug_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.hug_emoji));
+            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.hug_emoji));
             UpdateWidget(context, views);
         }else if(emoji.equals(context.getResources().getString(R.string.muscle_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.muscle_emoji));
+            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.muscle_emoji));
+            UpdateWidget(context, views);
+        }else if(emoji.equals(context.getResources().getString(R.string.no_emoji))){
+            views.setTextViewText(R.id.left_emoji_button, "");
             UpdateWidget(context, views);
         }
     }
@@ -220,14 +224,14 @@ public class InTouchWidget extends AppWidgetProvider {
     private static void RightBtnAction(Context context, RemoteViews views){
         if(lastClick==RIGHT_BTN){
             Log.i(TAG,"Closing layout");
-            views.setViewVisibility(R.id.colors_layout, View.INVISIBLE);
+            views.setViewVisibility(R.id.emoji_layout, View.INVISIBLE);
             forceWidgetUpdate(context, views);
             lastClick = -1;
             return;
         }
         Log.i(TAG,"Right Button pressed ");
         hideLayouts(views);
-        ShowColors(views);
+        ShowEmojis(views);
         forceWidgetUpdate(context, views);
         lastClick = RIGHT_BTN;
     }
@@ -235,14 +239,14 @@ public class InTouchWidget extends AppWidgetProvider {
     private static void LeftBtnAction(Context context, RemoteViews views){
         if(lastClick==LEFT_BTN){
             Log.i(TAG,"Closing layout");
-            views.setViewVisibility(R.id.emoji_layout, View.INVISIBLE);
+            views.setViewVisibility(R.id.colors_layout, View.INVISIBLE);
             forceWidgetUpdate(context, views);
             lastClick = -1;
             return;
         }
         Log.i(TAG,"Left Button pressed ");
         hideLayouts(views);
-        ShowEmojis(views);
+        ShowColors(views);
         forceWidgetUpdate(context, views);
         lastClick = LEFT_BTN;
     }
@@ -261,8 +265,8 @@ public class InTouchWidget extends AppWidgetProvider {
                         /// Continue flow if activity log added to db
                         Log.i(TAG,"Heart Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        prefs.edit().putString(WIDGET_EMOJI_CHANGE, context.getResources().getString(R.string.heart_emoji)).apply();
-                        views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.heart_emoji));
+                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.heart_emoji)).apply();
+                        views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.heart_emoji));
                         UpdateWidget(context, views);
                         /// Send notification to the user
                         FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.heart_emoji));
@@ -293,8 +297,8 @@ public class InTouchWidget extends AppWidgetProvider {
                         /// Continue flow if activity log added to db
                         Log.i(TAG,"Cry Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        prefs.edit().putString(WIDGET_EMOJI_CHANGE, context.getResources().getString(R.string.cry_emoji)).apply();
-                        views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.cry_emoji));
+                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.cry_emoji)).apply();
+                        views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.cry_emoji));
                         UpdateWidget(context, views);
 
                         /// Send notification to the user
@@ -327,8 +331,8 @@ public class InTouchWidget extends AppWidgetProvider {
                         /// Continue flow if activity log added to db
                         Log.i(TAG,"Hug Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        prefs.edit().putString(WIDGET_EMOJI_CHANGE, context.getResources().getString(R.string.hug_emoji)).apply();
-                        views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.hug_emoji));
+                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.hug_emoji)).apply();
+                        views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.hug_emoji));
                         UpdateWidget(context, views);
 
                         /// Send notification to the user
@@ -360,8 +364,8 @@ public class InTouchWidget extends AppWidgetProvider {
                         /// Continue flow if activity log added to db
                         Log.i(TAG,"Muscle Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        prefs.edit().putString(WIDGET_EMOJI_CHANGE, context.getResources().getString(R.string.muscle_emoji)).apply();
-                        views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.muscle_emoji));
+                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.muscle_emoji)).apply();
+                        views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.muscle_emoji));
                         UpdateWidget(context, views);
 
                         /// Send notification to the user
@@ -394,12 +398,18 @@ public class InTouchWidget extends AppWidgetProvider {
                         Log.i(TAG,"Negative Color Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
                         prefs.edit().putString(WIDGET_MY_MOOD_CHANGE, "negative").apply();
-                        views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_pink);
+                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE,"").apply();
+
+                        //cleanup the widget
+                        views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_pink);
+                        views.setViewVisibility(R.id.first_color_button,View.GONE);
                         UpdateWidget(context, views);
+
                         ScreenManager.getInstance().UpdateColor(context.getResources().getColor(R.color.bad), context);
                         /// Send notification to the user
                         FCMNotification notification = GenerateNewNotification(connection, "mood", "negative");
                         FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -426,7 +436,12 @@ public class InTouchWidget extends AppWidgetProvider {
                         Log.i(TAG,"Neutral Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
                         prefs.edit().putString(WIDGET_MY_MOOD_CHANGE, "neutral").apply();
-                        views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_white);
+                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE,"").apply();
+
+
+                        //cleanup the widget
+                        views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_white);
+                        views.setViewVisibility(R.id.second_color_button,View.GONE);
                         ScreenManager.getInstance().UpdateColor(context.getResources().getColor(R.color.neutral), context);
                         UpdateWidget(context, views);
 
@@ -459,10 +474,14 @@ public class InTouchWidget extends AppWidgetProvider {
                         Log.i(TAG,"Positive Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
                         prefs.edit().putString(WIDGET_MY_MOOD_CHANGE, "positive").apply();
-                        views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_green);
+                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE,"").apply();
+
+                        //cleanup the widget
+                        views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_green);
+                        views.setViewVisibility(R.id.third_color_button,View.GONE);
                         ScreenManager.getInstance().UpdateColor(context.getResources().getColor(R.color.good), context);
-                       // handleStaticPartnerMoodChange(context);
                         UpdateWidget(context, views);
+
                         /// Send notification to the user
                         FCMNotification notification = GenerateNewNotification(connection, "mood", "positive");
                         FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
@@ -537,13 +556,13 @@ public class InTouchWidget extends AppWidgetProvider {
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, InTouchWidget.class));
 
         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-        String emoji = prefs.getString(WIDGET_EMOJI_CHANGE,"noemoji");
         String my_emoji = prefs.getString(WIDGET_MY_EMOJI_CHANGE,"noemoji");
+        String partner_emoji = prefs.getString(WIDGET_PARTNER_EMOJI_CHANGE,"noemoji");
         String partner_mood =prefs.getString(WIDGET_PARTNER_MOOD_CHANGE,"nomood");
         String my_mood = prefs.getString(WIDGET_MY_MOOD_CHANGE,"nomood");
         //views.setTextViewText(R.id.appwidget_text, widgetText);
-        setupOnClickListener(views,context,R.id.appwidget_left_button,appWidgetIds[0],LEFT_BTN);
-        setupOnClickListener(views,context,R.id.left_button_emoji,appWidgetIds[0],RIGHT_BTN);
+        setupOnClickListener(views,context,R.id.appwidget_mood_button,appWidgetIds[0],LEFT_BTN);
+        setupOnClickListener(views,context,R.id.right_emoji_btn,appWidgetIds[0],RIGHT_BTN);
         setupOnClickListener(views,context,R.id.heart_button,appWidgetIds[0],HEART_BTN);
         setupOnClickListener(views,context,R.id.cry_button,appWidgetIds[0],CRY_BTN);
         setupOnClickListener(views,context,R.id.hug_button,appWidgetIds[0],HUG_BTN);
@@ -553,51 +572,55 @@ public class InTouchWidget extends AppWidgetProvider {
         setupOnClickListener(views,context,R.id.third_color_button,appWidgetIds[0], POSITIVE_COLOR_BTN);
 
         if(partner_mood.equals("positive")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_green);
+            views.setInt(R.id.appwidget_emoji_btn, "setBackgroundResource", R.drawable.circle_green);
             //UpdateWidget(context, views);
         }else if(partner_mood.equals("negative")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_pink);
+            views.setInt(R.id.appwidget_emoji_btn, "setBackgroundResource", R.drawable.circle_pink);
             // UpdateWidget(context, views);
         }else if(partner_mood.equals("neutral")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_white);
+            views.setInt(R.id.appwidget_emoji_btn, "setBackgroundResource", R.drawable.circle_white);
             // UpdateWidget(context, views);
         }
 
         if(my_mood.equals("positive")){
-            views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_green);
+            views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_green);
             //UpdateWidget(context, views);
         }else if(my_mood.equals("negative")){
-            views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_pink);
+            views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_pink);
             // UpdateWidget(context, views);
         }else if(my_mood.equals("neutral")){
-            views.setInt(R.id.appwidget_right_button, "setBackgroundResource", R.drawable.circle_white);
+            views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_white);
             // UpdateWidget(context, views);
-        }
-
-        if(emoji.equals(context.getResources().getString(R.string.cry_emoji))){
-            views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.cry_emoji));
-            // UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.heart_emoji))){
-            views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.heart_emoji));
-            //  UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.hug_emoji))){
-            views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.hug_emoji));
-            //  UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.muscle_emoji))){
-            views.setTextViewText(R.id.left_button_emoji, context.getResources().getString(R.string.muscle_emoji));
         }
 
         if(my_emoji.equals(context.getResources().getString(R.string.cry_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.cry_emoji));
+            views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.cry_emoji));
             // UpdateWidget(context, views);
         }else if(my_emoji.equals(context.getResources().getString(R.string.heart_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.heart_emoji));
+            views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.heart_emoji));
             //  UpdateWidget(context, views);
         }else if(my_emoji.equals(context.getResources().getString(R.string.hug_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.hug_emoji));
+            views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.hug_emoji));
             //  UpdateWidget(context, views);
         }else if(my_emoji.equals(context.getResources().getString(R.string.muscle_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.muscle_emoji));
+            views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.muscle_emoji));
+        }else if(my_emoji.equals("")){
+            views.setTextViewText(R.id.right_emoji_btn,"");
+        }
+
+        if(partner_emoji.equals(context.getResources().getString(R.string.cry_emoji))){
+            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.cry_emoji));
+            // UpdateWidget(context, views);
+        }else if(partner_emoji.equals(context.getResources().getString(R.string.heart_emoji))){
+            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.heart_emoji));
+            //  UpdateWidget(context, views);
+        }else if(partner_emoji.equals(context.getResources().getString(R.string.hug_emoji))){
+            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.hug_emoji));
+            //  UpdateWidget(context, views);
+        }else if(partner_emoji.equals(context.getResources().getString(R.string.muscle_emoji))){
+            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.muscle_emoji));
+        }else if(partner_emoji.equals("")){
+            views.setTextViewText(R.id.left_emoji_button,"");
         }
         appWidgetManager.updateAppWidget(appWidgetIds, views);
 

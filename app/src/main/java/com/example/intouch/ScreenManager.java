@@ -58,6 +58,38 @@ public class ScreenManager {
     }
 
     @SuppressLint("ResourceType")
+    public void initWallpapersFirstStartup(Context context) {
+
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
+        try {
+            Log.i(TAG,"First startup of the wallpapers!!");
+            String side = context.getSharedPreferences(MainActivity.MY_PREFERENCE, MODE_PRIVATE).getString("wallpaperSide","right");
+            int colorLeft = Color.parseColor("#FFDDDDDD");
+            int colorRight = Color.parseColor("#FFCCCCCC");
+
+            LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.wallpaper_image_v2);
+
+            VectorDrawable gradient_r = (VectorDrawable) drawable.findDrawableByLayerId(R.id.right_triangle);
+            gradient_r.setColorFilter(colorRight,PorterDuff.Mode.SRC_IN);
+
+            VectorDrawable gradient_l = (VectorDrawable) drawable.findDrawableByLayerId(R.id.left_triangle);
+            gradient_l.setColorFilter(colorLeft,PorterDuff.Mode.SRC_IN);
+
+            int width = drawable.getIntrinsicWidth();
+            int height = drawable.getIntrinsicHeight();
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+
+            //Bitmap bitmap2 = ((BitmapDrawable) drawable).getBitmap();
+            wallpaperManager.setBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("ResourceType")
     public void UpdatePartnerColor(String mood, Context context) {
 
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
@@ -67,15 +99,15 @@ public class ScreenManager {
             LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.wallpaper_image_v2);
 
             VectorDrawable gradient_r = (VectorDrawable) drawable.findDrawableByLayerId(R.id.right_triangle);
-            gradient_r.setColorFilter(right_last_color,PorterDuff.Mode.SRC_IN);
+            gradient_r.setColorFilter(color,PorterDuff.Mode.SRC_IN);
 
             //gradient_r.setTint(color);
             //}else{
             VectorDrawable gradient_l = (VectorDrawable) drawable.findDrawableByLayerId(R.id.left_triangle);
-            gradient_l.setColorFilter(color,PorterDuff.Mode.SRC_IN);
+            gradient_l.setColorFilter(left_last_color,PorterDuff.Mode.SRC_IN);
 
             //}
-            left_last_color = color;
+            right_last_color = color;
             Log.i(TAG,"left changed color : "+left_last_color+"   right current color: "+right_last_color);
 
             int width = drawable.getIntrinsicWidth();
@@ -102,13 +134,13 @@ public class ScreenManager {
 
             //if(side.equals("right")){
                 VectorDrawable gradient_r = (VectorDrawable) drawable.findDrawableByLayerId(R.id.right_triangle);
-                gradient_r.setColorFilter(color,PorterDuff.Mode.SRC_IN);
+                gradient_r.setColorFilter(right_last_color,PorterDuff.Mode.SRC_IN);
                 //gradient_r.setTint(color);
             //}else{
                 VectorDrawable gradient_l = (VectorDrawable) drawable.findDrawableByLayerId(R.id.left_triangle);
-                gradient_l.setColorFilter(left_last_color,PorterDuff.Mode.SRC_IN);
+                gradient_l.setColorFilter(color,PorterDuff.Mode.SRC_IN);
             //}
-            right_last_color = color;
+            left_last_color = color;
             Log.i(TAG,"right changed color : "+right_last_color+"   left current color: "+left_last_color);
 
 
@@ -126,7 +158,7 @@ public class ScreenManager {
         }
     }
 
-    public void initWallpapers(Context c){
+   /* public void initWallpapers(Context c){
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(c);
 
         int color = 0;
@@ -152,7 +184,7 @@ public class ScreenManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public static Bitmap tintImage(Bitmap bitmap, int color) {
         Paint paint = new Paint();

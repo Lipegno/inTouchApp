@@ -74,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
             startForegroundService(serviceIntent);
         }
 
+        initApplication(getApplicationContext());
+
+    }
+
+    public void initApplication(Context c){
+        ScreenManager.getInstance().initWallpapersFirstStartup(c);
     }
 
     public boolean foregroundServiceRunning(){

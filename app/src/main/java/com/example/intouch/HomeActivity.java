@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.example.intouch.dao.DAOConnection;
 import com.example.intouch.helpers.Callback;
 import com.example.intouch.dbmodels.Connection;
 import com.example.intouch.dbmodels.User;
+import com.example.intouch.settings.CustomizeColorsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +41,7 @@ import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "Home Activity";
     // region Declarations
     ProfilePicture.PictureListener pictureListener;
     private StorageReference storageReference;
@@ -157,6 +160,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(HomeActivity.this, "Color scheme", Toast.LENGTH_SHORT).show();
+                Intent i =  new Intent(HomeActivity.this,CustomizeColorsActivity.class);
+                startActivity(i);
                 // TO DO
                 // redirect to the activity where the color scheme is set
             }
@@ -332,5 +337,6 @@ public class HomeActivity extends AppCompatActivity {
         mAuth.signOut();
         redirectToLogIn();
     }
+
     // endregion
 }

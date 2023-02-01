@@ -67,7 +67,7 @@ public class InTouchAppService extends Service {
         );
 
         Log.i(TAG, "Receiver registered");
-        ScreenManager.getInstance().initWallpapers(getApplicationContext());
+        ScreenManager.getInstance().initWallpapersFirstStartup(getApplicationContext());
 
         super.onCreate();
     }
@@ -102,7 +102,7 @@ public class InTouchAppService extends Service {
                         .getAppWidgetIds(new ComponentName(getApplication(), InTouchWidget.class));
                 i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                 i.putExtra("emoji",mood);
-                i.setAction(InTouchWidget.WIDGET_EMOJI_CHANGE);
+                i.setAction(InTouchWidget.WIDGET_MY_EMOJI_CHANGE);
                 sendBroadcast(i);
             }
 

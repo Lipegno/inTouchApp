@@ -46,6 +46,7 @@
     <string name="hug_emoji">&#129303;</string>
     <string name="cry_emoji">&#128546;</string>
     <string name="muscle_emoji">&#128170;</string>
+    <string name="no_emoji">"NO EMOJI"</string>
     <string name="customize_colors">Customize colors</string>
     <string name="you_are_now_connected">You are now connected!</string>
     <string name="or_sign_up">or Sign Up</string>

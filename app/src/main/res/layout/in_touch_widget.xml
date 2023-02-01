@@ -17,69 +17,77 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/roundcorner"
-        android:padding="8dip" >
+        android:layout_marginLeft="20dp"
+        android:padding="8dip">
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/heart_button"
-            android:background="@android:color/transparent"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:textSize="25sp"
-            android:text="@string/heart_emoji"/>
+            android:background="@android:color/transparent"
+            android:text="@string/heart_emoji"
+            android:textSize="25sp" />
+
         <Button
             android:id="@+id/hug_button"
-            android:background="@android:color/transparent"
             android:layout_width="40dp"
-            android:layout_marginLeft="8dp"
             android:layout_height="40dp"
-            android:textSize="25sp"
-            android:text="@string/hug_emoji"/>
+            android:layout_marginLeft="8dp"
+            android:background="@android:color/transparent"
+            android:text="@string/hug_emoji"
+            android:textSize="25sp" />
+
         <Button
             android:id="@+id/cry_button"
-            android:background="@android:color/transparent"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="8dp"
-            android:textSize="25sp"
-            android:text="@string/cry_emoji"/>
+            android:background="@android:color/transparent"
+            android:text="@string/cry_emoji"
+            android:textSize="25sp" />
+
         <Button
             android:id="@+id/muscle_button"
-            android:background="@android:color/transparent"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="8dp"
-            android:textSize="25sp"
-            android:text="@string/muscle_emoji"/>
+            android:background="@android:color/transparent"
+            android:text="@string/muscle_emoji"
+            android:textSize="25sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/colors_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/roundcorner"
-        android:padding="8dip"
-        android:layout_marginLeft="80dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dip">
+
         <Button
             android:id="@+id/first_color_button"
-            android:background="@drawable/circle_pink"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:textSize="25sp"/>
+            android:background="@drawable/circle_pink"
+            android:textSize="25sp" />
+
         <Button
             android:id="@+id/second_color_button"
-            android:background="@drawable/circle_white"
-            android:layout_marginLeft="8dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:textSize="25sp"/>
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/circle_white"
+            android:textSize="25sp" />
+
         <Button
             android:id="@+id/third_color_button"
-            android:layout_marginLeft="8dp"
-            android:background="@drawable/circle_green"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:textSize="25sp"/>
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/circle_green"
+            android:textSize="25sp" />
     </LinearLayout>
 
 </RelativeLayout>
@@ -90,7 +98,7 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
     android:orientation="horizontal">
 
     <Button
-        android:id="@+id/right_button_emoji"
+        android:id="@+id/left_emoji_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center_vertical"
@@ -106,7 +114,7 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/appwidget_left_button"
+                android:id="@+id/appwidget_mood_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -121,7 +129,7 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
     </FrameLayout>
 
     <FrameLayout
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -129,7 +137,7 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/appwidget_right_button"
+                android:id="@+id/appwidget_emoji_btn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -143,7 +151,7 @@ android:theme="@style/Theme.InTouch.AppWidgetContainer">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/left_button_emoji"
+                android:id="@+id/right_emoji_btn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="24dp"
