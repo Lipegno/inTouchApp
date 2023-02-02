@@ -41,7 +41,7 @@ import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final String TAG = "Home Activity";
+    private static final String TAG = "Home Activity Notific Handler";
     // region Declarations
     ProfilePicture.PictureListener pictureListener;
     private StorageReference storageReference;
