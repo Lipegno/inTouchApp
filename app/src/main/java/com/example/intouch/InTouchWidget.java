@@ -22,6 +22,7 @@ import com.example.intouch.helpers.Callback;
 import com.example.intouch.dbmodels.ActivityLog;
 import com.example.intouch.dbmodels.Connection;
 import com.example.intouch.models.FCMNotification;
+import com.example.intouch.settings.EmojiSelectionActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,10 +67,10 @@ public class InTouchWidget extends AppWidgetProvider {
     private static String partnerMood;
     private static String partnerEmoji;
 
-    private String first_emoji;
-    private String second_emoji;
-    private String third_emoji;
-    private String fourth_emoji;
+    private static String first_emoji;
+    private static String second_emoji;
+    private static String third_emoji;
+    private static String fourth_emoji;
 
     static private void setupOnClickListener(RemoteViews view, Context context, int view_id, int appWidgetId, int code){
 
@@ -610,6 +611,7 @@ public class InTouchWidget extends AppWidgetProvider {
         setupOnClickListener(views,context,R.id.second_color_button,appWidgetIds[0], NEUTRAL_COLOR_BTN);
         setupOnClickListener(views,context,R.id.third_color_button,appWidgetIds[0], POSITIVE_COLOR_BTN);
 
+        updateEmojiSelection(context,views);
 
         if(partner_mood.equals("positive")){
             views.setInt(R.id.appwidget_emoji_btn, "setBackgroundResource", R.drawable.circle_green);
@@ -663,6 +665,22 @@ public class InTouchWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.left_emoji_button,"");
         }
         appWidgetManager.updateAppWidget(appWidgetIds, views);
+
+    }
+
+    private static void updateEmojiSelection(Context context, RemoteViews views){
+        SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
+        first_emoji = prefs.getString(EmojiSelectionActivity.FIRST_EMOJI_SELECTION,"noemoji");
+        second_emoji = prefs.getString(EmojiSelectionActivity.SECOND_EMOJI_SELECTION,"noemoji");
+        third_emoji = prefs.getString(EmojiSelectionActivity.THIRD_EMOJI_SELECTION,"noemoji");
+        fourth_emoji = prefs.getString(EmojiSelectionActivity.FOURTH_EMOJI_SELECTION,"noemoji");
+
+        views.setTextViewText(R.id.heart_button,first_emoji);
+        views.setTextViewText(R.id.hug_button,second_emoji);
+        views.setTextViewText(R.id.cry_button,third_emoji);
+        views.setTextViewText(R.id.muscle_button,fourth_emoji);
+
+
 
     }
 
