@@ -42,7 +42,7 @@
     <string name="app_widget_description">This is an app widget description</string>
     <string name="appwidget_left_text">left</string>
     <string name="appwidget_right_text">right</string>
-    <string name="heart_emoji">❤️</string>
+    <string name="heart_emoji">&#57378;️</string>
     <string name="hug_emoji">&#129303;</string>
     <string name="cry_emoji">&#128546;</string>
     <string name="muscle_emoji">&#128170;</string>
@@ -52,6 +52,7 @@
     <string name="or_sign_up">or Sign Up</string>
     <string name="don_t_worry_you_can_change_the_color_scheme_at_any_time">Don\'t worry, you can change the color scheme at any time</string>
     <string name="accept_request">Accept Request</string>
+    <string name="title_activity_emoji_selection">EmojiSelectionActivity</string>
 
     <!-- End widget app -->
 </resources>

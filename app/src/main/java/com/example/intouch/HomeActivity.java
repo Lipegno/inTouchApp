@@ -28,6 +28,7 @@ import com.example.intouch.helpers.Callback;
 import com.example.intouch.dbmodels.Connection;
 import com.example.intouch.dbmodels.User;
 import com.example.intouch.settings.CustomizeColorsActivity;
+import com.example.intouch.settings.EmojiSelectionActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -191,6 +192,9 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "Emojis", Toast.LENGTH_SHORT).show();
                 // TO DO
                 // redirect to the activity where the emojis are set
+                Toast.makeText(HomeActivity.this, "EmojiText", Toast.LENGTH_SHORT).show();
+                Intent i =  new Intent(HomeActivity.this, EmojiSelectionActivity.class);
+                startActivity(i);
             }
         });
 

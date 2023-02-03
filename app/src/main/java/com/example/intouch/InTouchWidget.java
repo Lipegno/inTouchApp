@@ -66,6 +66,11 @@ public class InTouchWidget extends AppWidgetProvider {
     private static String partnerMood;
     private static String partnerEmoji;
 
+    private String first_emoji;
+    private String second_emoji;
+    private String third_emoji;
+    private String fourth_emoji;
+
     static private void setupOnClickListener(RemoteViews view, Context context, int view_id, int appWidgetId, int code){
 
         Intent intent = new Intent(context,InTouchWidget.class);
@@ -154,11 +159,11 @@ public class InTouchWidget extends AppWidgetProvider {
         }else{
             lastClick = -1;
             if(command == HEART_BTN){
-                HeartBtnAction(context, views);
+                EmojiButtonAction(context, views,"&#57378;");
             }else if(command == CRY_BTN){
-                CryBtnAction(context, views);
+                EmojiButtonAction(context, views,"&#128546;");
             }else if(command == HUG_BTN){
-                HugBtnAction(context, views);
+                EmojiButtonAction(context, views,"&#129303;");
             }else if(command == MUSCLE_BTN){
                 MuscleBtnAction(context, views);
             }else if(command == NEGATIVE_COLOR_BTN){
@@ -364,12 +369,46 @@ public class InTouchWidget extends AppWidgetProvider {
                         /// Continue flow if activity log added to db
                         Log.i(TAG,"Muscle Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
+                        String teste = context.getResources().getString(R.string.muscle_emoji);
                         prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.muscle_emoji)).apply();
                         views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.muscle_emoji));
                         UpdateWidget(context, views);
 
                         /// Send notification to the user
                         FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.muscle_emoji));
+                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Error on adding activity log connection.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private static void EmojiButtonAction(Context context, RemoteViews views,String emoji){
+        hideLayouts(views);
+        GetConnectionInformation(context, new Callback<Connection>() {
+            @Override
+            public void execute(Connection connection) {
+                ActivityLog activity = GenerateNewActivity("Change Emoji: Hug", connection);
+
+                /// Add the activity log to db
+                DAOActivityLog.getInstance().add(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        /// Continue flow if activity log added to db
+                        Log.i(TAG,"Hug Button pressed ");
+                        SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
+                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, emoji).apply();
+                        views.setTextViewText(R.id.right_emoji_btn, emoji);
+                        UpdateWidget(context, views);
+
+                        /// Send notification to the user
+                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.hug_emoji));
                         FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
 
                     }
@@ -570,6 +609,7 @@ public class InTouchWidget extends AppWidgetProvider {
         setupOnClickListener(views,context,R.id.first_color_button,appWidgetIds[0], NEGATIVE_COLOR_BTN);
         setupOnClickListener(views,context,R.id.second_color_button,appWidgetIds[0], NEUTRAL_COLOR_BTN);
         setupOnClickListener(views,context,R.id.third_color_button,appWidgetIds[0], POSITIVE_COLOR_BTN);
+
 
         if(partner_mood.equals("positive")){
             views.setInt(R.id.appwidget_emoji_btn, "setBackgroundResource", R.drawable.circle_green);
