@@ -87,7 +87,7 @@ public class WaitRequestActivity extends AppCompatActivity {
 
             if (bundle != null) {
                 receiver = (User) bundle.getSerializable("receiver");
-                waitingRequestTextView.setText("Waiting for your request to be accepted by " + receiver.email);
+                waitingRequestTextView.setText("Por favor aguarde que o pedido seja aceite para começar a utilizar a aplicação" + receiver.email);
             }
 
         }

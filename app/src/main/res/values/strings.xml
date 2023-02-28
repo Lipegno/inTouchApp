@@ -1,5 +1,28 @@
 <resources>
+
     <string name="app_name">InTouch</string>
+    <string name="start">Começar</string>
+    <string name="Logo">logo</string> // Não estou a ver onde é que aparece a palavra "logo" escrita por isso não sei como traduzir
+    <string name="welcome_to_intouch">Bem-vindo a inTouch</string>
+    <string name="share_your_moods">Partilhe emoções e esteja presente</string>
+    <string name="continue_string">Continuar</string>
+    <string name="account_created">Conta criada com sucesso</string>
+    <string name="connect_with">Conecte-se a alguém especial</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirmar password</string>
+    <string name="create_an_account">Criar conta</string>
+    <string name="request_was_sent">Pedido de conexão enviado</string>
+    <string name="please_wait">Por favor aguarde que o pedido seja aceite para começar a utilizar a aplicação</string>
+    <string name="cancel_request">Cancelar pedido</string>
+    <string name="sign_out">Terminar sessão</string>
+    <string name="log_in">Iniciar sessão</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="select_a_mood_and_pick_a_color">Selecione um estado emocional e escolha a cor que melhor o representa</string>
+    <string name="select_the_color_scheme">Selecione o esquema de cores que melhor representa os seus estados emocionais</string>
+
+   <!-- <string name="app_name">InTouch</string>
     <string name="start">Let\'s start!</string>
     <string name="Logo">logo</string>
     <string name="welcome_to_intouch">Welcome to inTouch</string>
@@ -16,27 +39,28 @@
     <string name="cancel_request">Cancel request</string>
     <string name="sign_out">Sign out</string>
     <string name="log_in">Log In</string>
+     <string name="next">Next</string>
+    <string name="previous">Previous</string>-->
     <string name="title_activity_home_page">HomePageActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="user_email_com">user@email.com</string>
     <string name="user_image">User Image</string>
     <string name="plus">+</string>
-    <string name="select_a_mood_and_pick_a_color">Select a mood and pick a color</string>
+   <!-- <string name="select_a_mood_and_pick_a_color">Select a mood and pick a color</string>-->
     <string name="minus">-</string>
     <string name="plusminus">+/-</string>
     <string name="ok">OK</string>
-    <string name="select_the_color_scheme">Select the color scheme that best represents your mood</string>
+   <!-- <string name="select_the_color_scheme">Select the color scheme that best represents your mood</string>-->
     <string name="which_side_of_the_wallpaper">Which side of the wallpaper do you want your moods to be represnted?</string>
     <string name="the_other_side_will_represent">The other side will represent the moods of your special one</string>
 
-    <!--- Widget App -->
+        <!--- Widget App -->
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
@@ -48,10 +72,10 @@
     <string name="muscle_emoji">&#128170;</string>
     <string name="no_emoji">"NO EMOJI"</string>
     <string name="customize_colors">Customize colors</string>
-    <string name="you_are_now_connected">You are now connected!</string>
-    <string name="or_sign_up">or Sign Up</string>
+    <string name="you_are_now_connected">Pedido de conexão aceite!</string>
+    <string name="or_sign_up">ou Entrar</string>
     <string name="don_t_worry_you_can_change_the_color_scheme_at_any_time">Don\'t worry, you can change the color scheme at any time</string>
-    <string name="accept_request">Accept Request</string>
+    <string name="accept_request">Aceitar Pedido</string>
     <string name="title_activity_emoji_selection">EmojiSelectionActivity</string>
 
     <!-- End widget app -->

@@ -46,8 +46,8 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void redirectToColorSchemePickerActivity(User firstUser, User secondUser) {
-        Intent intent = new Intent(this, ColorSchemePickerActivity.class);
+    private void redirectToSettingsActivity(User firstUser, User secondUser) {
+        Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
@@ -93,7 +93,7 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         buttonLetsStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirectToColorSchemePickerActivity(firstUser, secondUser);
+                redirectToSettingsActivity(firstUser, secondUser);
             }
         });
     }

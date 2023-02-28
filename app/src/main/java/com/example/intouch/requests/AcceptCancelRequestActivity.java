@@ -119,7 +119,7 @@ public class AcceptCancelRequestActivity extends AppCompatActivity {
             @Override
             public void execute(User user) {
                 sender = user;
-                receivingText.setText("You received a connection request from " + sender.email);
+                receivingText.setText("Recebeu um pedido de conexão de " + sender.email);
             }
         }, new Callback() {
             @Override

@@ -69,12 +69,13 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/enjoyMoods"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:lineSpacingExtra="5sp"
-        android:text="Enjoy your moods together"
+        android:text="Pedido de conexão aceite!"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

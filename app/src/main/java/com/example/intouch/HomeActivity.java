@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +52,8 @@ public class HomeActivity extends AppCompatActivity {
     TextView colorSchemeTextView;
     TextView wallpaperSidesTextView;
     TextView circlesTextView;
-    TextView emojisTextView;
+    TextView emojiArrow;
+    TextView emojiTextView;
     TextView notificationsTextView;
 
     ImageView userImageView;
@@ -105,7 +105,8 @@ public class HomeActivity extends AppCompatActivity {
         colorSchemeTextView = findViewById(R.id.arrowColorScheme);
         wallpaperSidesTextView = findViewById(R.id.arrowWallpaperSides);
         circlesTextView = findViewById(R.id.arrowCircles);
-        emojisTextView = findViewById(R.id.arrowEmojis);
+        emojiArrow = findViewById(R.id.arrowEmojis);
+        emojiTextView = findViewById(R.id.emojis);
         notificationsTextView = findViewById(R.id.arrowNotifications);
 
         singOutTextView = findViewById(R.id.signOutHome);
@@ -186,7 +187,19 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        emojisTextView.setOnClickListener(new View.OnClickListener() {
+        emojiArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "Emojis", Toast.LENGTH_SHORT).show();
+                // TO DO
+                // redirect to the activity where the emojis are set
+                Toast.makeText(HomeActivity.this, "EmojiText", Toast.LENGTH_SHORT).show();
+                Intent i =  new Intent(HomeActivity.this, EmojiSelectionActivity.class);
+                startActivity(i);
+            }
+        });
+
+        emojiTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(HomeActivity.this, "Emojis", Toast.LENGTH_SHORT).show();
