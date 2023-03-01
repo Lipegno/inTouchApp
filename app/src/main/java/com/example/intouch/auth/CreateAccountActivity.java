@@ -196,8 +196,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     // endregion
 
     private void showProgressDialog(@NonNull ProgressDialog progressDialog) {
-        progressDialog.setMessage("Please, wait while we are creating your account.");
-        progressDialog.setTitle("Register");
+        progressDialog.setMessage("Por favor aguarde enquanto a sua conta é criada.");
+        progressDialog.setTitle("Registo");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }

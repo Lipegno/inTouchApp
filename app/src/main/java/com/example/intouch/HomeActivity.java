@@ -323,7 +323,7 @@ public class HomeActivity extends AppCompatActivity {
         yesButton = popupView.findViewById(R.id.yesButton);
         cancelButton = popupView.findViewById(R.id.cancelButton);
 
-        popUpMessage.setText("Are you sure you want to sign out?");
+        popUpMessage.setText("Tem a certeza que quer terminar a sua sessão");
 
 
         yesButton.setOnClickListener(new View.OnClickListener() {

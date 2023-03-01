@@ -11,7 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Guardar"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:background="@drawable/rounded_valencia_button"
         app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="TextContrastCheck"
         tools:layout_editor_absoluteX="158dp" />
 
     <EditText

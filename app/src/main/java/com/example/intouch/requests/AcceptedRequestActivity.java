@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.example.intouch.settings.ColorSchemePickerActivity;
+import com.example.intouch.FirstInstructionsActivity;
 import com.example.intouch.HomeActivity;
 import com.example.intouch.MainActivity;
 import com.example.intouch.R;
@@ -46,8 +46,8 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void redirectToSettingsActivity(User firstUser, User secondUser) {
-        Intent intent = new Intent(this, HomeActivity.class);
+    private void redirectToInstructionsActivity(User firstUser, User secondUser) {
+        Intent intent = new Intent(this, FirstInstructionsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
@@ -93,7 +93,7 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         buttonLetsStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirectToSettingsActivity(firstUser, secondUser);
+                redirectToInstructionsActivity(firstUser, secondUser);
             }
         });
     }

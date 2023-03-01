@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstInstructionsActivity">
+
+    <LinearLayout
+        android:id="@+id/fist_step"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no crículo da direita os seus estados emocionais"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:src="@drawable/first_step"/>
+
+        <Button
+            android:id="@+id/first_step_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Próximo"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/second_step"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no crículo da direita os seus estados emocionais"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:src="@drawable/second_step"/>
+
+        <Button
+            android:id="@+id/second_step_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Próximo"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/third_step"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no crículo da direita os seus estados emocionais"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:src="@drawable/third_step"/>
+
+        <Button
+            android:id="@+id/third_step_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Próximo"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/fourth_step"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no crículo da direita os seus estados emocionais"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:src="@drawable/fourth_step"/>
+
+        <Button
+            android:id="@+id/fourh_step_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Próximo"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
