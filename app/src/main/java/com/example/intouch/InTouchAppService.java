@@ -46,7 +46,7 @@ public class InTouchAppService extends Service {
         Notification.Builder notification = new Notification.Builder(this, CHANNELID)
                 .setContentText("Service is running")
                 .setContentTitle("Service enabled")
-                .setSmallIcon(R.drawable.circle);
+                .setSmallIcon(R.drawable.ic_launcher);
 
         startForeground(1001, notification.build());
 
@@ -75,37 +75,40 @@ public class InTouchAppService extends Service {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle data = intent.getExtras();
-            String type = data.getString("type");
-            if(type.equals("mood")){
-                String mood = data.getString("mood");
-                Log.i(TAG,"Type : "+type+" Mood: "+mood);
-                ScreenManager.getInstance().UpdatePartnerColor(mood,getApplicationContext());
-                Intent i = new Intent(context, InTouchWidget.class);
-                intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            try {
+                Bundle data = intent.getExtras();
+                String type = data.getString("type");
+                if (type.equals("mood")) {
+                    String mood = data.getString("mood");
+                    Log.i(TAG, "Type : " + type + " Mood: " + mood);
+                    ScreenManager.getInstance().UpdatePartnerColor(mood, getApplicationContext());
+                    Intent i = new Intent(context, InTouchWidget.class);
+                    intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
 // since it seems the onUpdate() is only fired on that:
-                int[] ids = AppWidgetManager.getInstance(getApplication())
-                        .getAppWidgetIds(new ComponentName(getApplication(), InTouchWidget.class));
-                i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-                i.putExtra("mood",mood);
-                i.setAction(InTouchWidget.WIDGET_PARTNER_MOOD_CHANGE);
-                sendBroadcast(i);
-            } else if(type.equals("emoji")){
-                Log.i(TAG, "Changing emojis");
-                String mood = data.getString("emoji");
-                Intent i = new Intent(context, InTouchWidget.class);
-                intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                    int[] ids = AppWidgetManager.getInstance(getApplication())
+                            .getAppWidgetIds(new ComponentName(getApplication(), InTouchWidget.class));
+                    i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                    i.putExtra("mood", mood);
+                    i.setAction(InTouchWidget.WIDGET_PARTNER_MOOD_CHANGE);
+                    sendBroadcast(i);
+                } else if (type.equals("emoji")) {
+                    Log.i(TAG, "Changing emojis");
+                    String mood = data.getString("emoji");
+                    Intent i = new Intent(context, InTouchWidget.class);
+                    intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
 // since it seems the onUpdate() is only fired on that:
-                int[] ids = AppWidgetManager.getInstance(getApplication())
-                        .getAppWidgetIds(new ComponentName(getApplication(), InTouchWidget.class));
-                i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-                i.putExtra("emoji",mood);
-                i.setAction(InTouchWidget.WIDGET_MY_EMOJI_CHANGE);
-                sendBroadcast(i);
+                    int[] ids = AppWidgetManager.getInstance(getApplication())
+                            .getAppWidgetIds(new ComponentName(getApplication(), InTouchWidget.class));
+                    i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                    i.putExtra("emoji", mood);
+                    i.setAction(InTouchWidget.WIDGET_MY_EMOJI_CHANGE);
+                    sendBroadcast(i);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
-
 
         }
     };

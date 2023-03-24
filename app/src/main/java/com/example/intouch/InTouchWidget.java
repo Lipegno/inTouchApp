@@ -210,23 +210,6 @@ public class InTouchWidget extends AppWidgetProvider {
         sharedpreferences.edit().putString(WIDGET_PARTNER_EMOJI_CHANGE,emoji).apply();
         views.setTextViewText(R.id.left_emoji_button, emoji);
         UpdateWidget(context, views);
-
-        /*if(emoji.equals(context.getResources().getString(R.string.cry_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.cry_emoji));
-            UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.heart_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.heart_emoji));
-            UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.hug_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.hug_emoji));
-            UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.muscle_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.muscle_emoji));
-            UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.no_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, "");
-            UpdateWidget(context, views);
-        }*/
     }
 
     private static void RightBtnAction(Context context, RemoteViews views){
@@ -259,145 +242,26 @@ public class InTouchWidget extends AppWidgetProvider {
         lastClick = LEFT_BTN;
     }
 
-    private static void HeartBtnAction(Context context, RemoteViews views){
-        hideLayouts(views);
-        GetConnectionInformation(context, new Callback<Connection>() {
-            @Override
-            public void execute(Connection connection) {
-                ActivityLog activity = GenerateNewActivity("Change Emoji: Heart", connection);
-
-                /// Add the activity log to db
-                DAOActivityLog.getInstance().add(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        /// Continue flow if activity log added to db
-                        Log.i(TAG,"Heart Button pressed ");
-                        SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.heart_emoji)).apply();
-                        views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.heart_emoji));
-                        UpdateWidget(context, views);
-                        /// Send notification to the user
-                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.heart_emoji));
-                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Error on adding activity log connection.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-    }
-
-    private static void CryBtnAction(Context context, RemoteViews views){
-        hideLayouts(views);
-        GetConnectionInformation(context, new Callback<Connection>() {
-            @Override
-            public void execute(Connection connection) {
-                ActivityLog activity = GenerateNewActivity("Change Emoji: Cry", connection);
-
-                /// Add the activity log to db
-                DAOActivityLog.getInstance().add(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        /// Continue flow if activity log added to db
-                        Log.i(TAG,"Cry Button pressed ");
-                        SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.cry_emoji)).apply();
-                        views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.cry_emoji));
-                        UpdateWidget(context, views);
-
-                        /// Send notification to the user
-                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.cry_emoji));
-                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
-
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Error on adding activity log connection.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-    }
-
-    private static void HugBtnAction(Context context, RemoteViews views){
-        hideLayouts(views);
-        GetConnectionInformation(context, new Callback<Connection>() {
-            @Override
-            public void execute(Connection connection) {
-                ActivityLog activity = GenerateNewActivity("Change Emoji: Hug", connection);
-
-                /// Add the activity log to db
-                DAOActivityLog.getInstance().add(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        /// Continue flow if activity log added to db
-                        Log.i(TAG,"Hug Button pressed ");
-                        SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.hug_emoji)).apply();
-                        views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.hug_emoji));
-                        UpdateWidget(context, views);
-
-                        /// Send notification to the user
-                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.hug_emoji));
-                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Error on adding activity log connection.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-    }
-
-    private static void MuscleBtnAction(Context context, RemoteViews views){
-        hideLayouts(views);
-        GetConnectionInformation(context, new Callback<Connection>() {
-            @Override
-            public void execute(Connection connection) {
-                ActivityLog activity = GenerateNewActivity("Change Emoji: Muscle", connection);
-
-                /// Add the activity log to db
-                DAOActivityLog.getInstance().add(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        /// Continue flow if activity log added to db
-                        Log.i(TAG,"Muscle Button pressed ");
-                        SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        String teste = context.getResources().getString(R.string.muscle_emoji);
-                        prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, context.getResources().getString(R.string.muscle_emoji)).apply();
-                        views.setTextViewText(R.id.right_emoji_btn, context.getResources().getString(R.string.muscle_emoji));
-                        UpdateWidget(context, views);
-
-                        /// Send notification to the user
-                        FCMNotification notification = GenerateNewNotification(connection, "emoji", context.getResources().getString(R.string.muscle_emoji));
-                        FCMSend.pushNotification(context, notification.deviceToken, notification.title, notification.message);
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Error on adding activity log connection.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-    }
 
     private static void EmojiButtonAction(Context context, RemoteViews views,int button){
         hideLayouts(views);
+        final String emoji;
+        if(button==HEART_BTN){
+            emoji=first_emoji;
+        }else if(button==HUG_BTN){
+            emoji=second_emoji;
+        }else if(button==CRY_BTN){
+            emoji=third_emoji;
+        }else if(button==MUSCLE_BTN){
+            emoji=fourth_emoji;
+        }else{
+            emoji="";
+        }
         GetConnectionInformation(context, new Callback<Connection>() {
+
             @Override
             public void execute(Connection connection) {
-                ActivityLog activity = GenerateNewActivity("Change Emoji: Hug", connection);
+                ActivityLog activity = GenerateNewActivity("Change Emoji: "+emoji, connection);
 
                 /// Add the activity log to db
                 DAOActivityLog.getInstance().add(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -406,16 +270,7 @@ public class InTouchWidget extends AppWidgetProvider {
                         /// Continue flow if activity log added to db
                         Log.i(TAG,"Hug Button pressed ");
                         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-                        String emoji = "";
-                        if(button==HEART_BTN){
-                            emoji=first_emoji;
-                        }else if(button==HUG_BTN){
-                            emoji=second_emoji;
-                        }else if(button==CRY_BTN){
-                            emoji=third_emoji;
-                        }else if(button==MUSCLE_BTN){
-                            emoji=fourth_emoji;
-                        }
+
                         prefs.edit().putString(WIDGET_MY_EMOJI_CHANGE, emoji).apply();
                         views.setTextViewText(R.id.right_emoji_btn, emoji);
                         UpdateWidget(context, views);
@@ -585,6 +440,7 @@ public class InTouchWidget extends AppWidgetProvider {
 
     private static FCMNotification GenerateNewNotification(Connection connection, String title, String message){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         String receiverToken = "";
 
         if(connection.firstUser.uid.equals(user.getUid())){
@@ -593,7 +449,7 @@ public class InTouchWidget extends AppWidgetProvider {
             receiverToken = connection.firstUser.deviceToken;
         }
 
-       Log.i(TAG,"sending to "+receiverToken);
+       Log.i(TAG,"User UID "+user.getUid()+"  Sending to "+receiverToken);
 
         return new FCMNotification(receiverToken, title, message);
     }
@@ -624,8 +480,8 @@ public class InTouchWidget extends AppWidgetProvider {
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, InTouchWidget.class));
 
         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-        String my_emoji = prefs.getString(WIDGET_MY_EMOJI_CHANGE,"noemoji");
-        String partner_emoji = prefs.getString(WIDGET_PARTNER_EMOJI_CHANGE,"noemoji");
+        String my_emoji = prefs.getString(WIDGET_MY_EMOJI_CHANGE,"");
+        String partner_emoji = prefs.getString(WIDGET_PARTNER_EMOJI_CHANGE,"");
         String partner_mood =prefs.getString(WIDGET_PARTNER_MOOD_CHANGE,"nomood");
         String my_mood = prefs.getString(WIDGET_MY_MOOD_CHANGE,"nomood");
         //views.setTextViewText(R.id.appwidget_text, widgetText);
@@ -654,90 +510,32 @@ public class InTouchWidget extends AppWidgetProvider {
 
         if(my_mood.equals("positive")){
             views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_green);
-            //UpdateWidget(context, views);
         }else if(my_mood.equals("negative")){
             views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_pink);
-            // UpdateWidget(context, views);
         }else if(my_mood.equals("neutral")){
             views.setInt(R.id.appwidget_mood_button, "setBackgroundResource", R.drawable.circle_white);
-            // UpdateWidget(context, views);
         }
 
         views.setTextViewText(R.id.right_emoji_btn, my_emoji);
         views.setTextViewText(R.id.left_emoji_button, partner_emoji);
 
-        /*if(partner_emoji.equals(context.getResources().getString(R.string.cry_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.cry_emoji));
-            // UpdateWidget(context, views);
-        }else if(partner_emoji.equals(context.getResources().getString(R.string.heart_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.heart_emoji));
-            //  UpdateWidget(context, views);
-        }else if(partner_emoji.equals(context.getResources().getString(R.string.hug_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.hug_emoji));
-            //  UpdateWidget(context, views);
-        }else if(partner_emoji.equals(context.getResources().getString(R.string.muscle_emoji))){
-            views.setTextViewText(R.id.left_emoji_button, context.getResources().getString(R.string.muscle_emoji));
-        }else if(partner_emoji.equals("")){
-            views.setTextViewText(R.id.left_emoji_button,"");
-        }*/
         appWidgetManager.updateAppWidget(appWidgetIds, views);
 
     }
 
     private static void updateEmojiSelection(Context context, RemoteViews views){
         SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-        first_emoji = prefs.getString(EmojiSelectionActivity.FIRST_EMOJI_SELECTION,"noemoji");
-        second_emoji = prefs.getString(EmojiSelectionActivity.SECOND_EMOJI_SELECTION,"noemoji");
-        third_emoji = prefs.getString(EmojiSelectionActivity.THIRD_EMOJI_SELECTION,"noemoji");
-        fourth_emoji = prefs.getString(EmojiSelectionActivity.FOURTH_EMOJI_SELECTION,"noemoji");
+        first_emoji = prefs.getString(EmojiSelectionActivity.FIRST_EMOJI_SELECTION,"");
+        second_emoji = prefs.getString(EmojiSelectionActivity.SECOND_EMOJI_SELECTION,"");
+        third_emoji = prefs.getString(EmojiSelectionActivity.THIRD_EMOJI_SELECTION,"");
+        fourth_emoji = prefs.getString(EmojiSelectionActivity.FOURTH_EMOJI_SELECTION,"");
 
         views.setTextViewText(R.id.heart_button,first_emoji);
         views.setTextViewText(R.id.hug_button,second_emoji);
         views.setTextViewText(R.id.cry_button,third_emoji);
         views.setTextViewText(R.id.muscle_button,fourth_emoji);
-
-
-
     }
 
-    /*private static void handleStaticPartnerMoodChange(Context context){
-
-        SharedPreferences prefs  = context.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
-        String emoji = prefs.getString(WIDGET_EMOJI_CHANGE,"noemoji");
-        String mood =prefs.getString(WIDGET_MOOD_CHANGE,"nomood");
-        Log.v(TAG,"CURRENT PARTNER MOOD: "+mood);
-        Log.v(TAG,"CURRENT PARTNER EMOJI: "+emoji);
-
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.in_touch_widget);
-        hideLayouts(views);
-        if(mood.equals("positive")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_green);
-            //UpdateWidget(context, views);
-        }else if(mood.equals("negative")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_pink);
-           // UpdateWidget(context, views);
-        }else if(mood.equals("neutral")){
-            views.setInt(R.id.appwidget_left_button, "setBackgroundResource", R.drawable.circle_white);
-           // UpdateWidget(context, views);
-        }
-
-        if(emoji.equals(context.getResources().getString(R.string.cry_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.cry_emoji));
-           // UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.heart_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.heart_emoji));
-          //  UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.hug_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.hug_emoji));
-          //  UpdateWidget(context, views);
-        }else if(emoji.equals(context.getResources().getString(R.string.muscle_emoji))){
-            views.setTextViewText(R.id.right_button_emoji, context.getResources().getString(R.string.muscle_emoji));
-         }
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, InTouchWidget.class));
-        appWidgetManager.updateAppWidget(appWidgetIds, views);
-
-    }*/
 
     private static void hideLayouts(RemoteViews views){
         views.setViewVisibility(R.id.emoji_layout, View.INVISIBLE);

@@ -1,5 +1,8 @@
 package com.example.intouch;
 
+import static com.example.intouch.InTouchWidget.WIDGET_MY_MOOD_CHANGE;
+import static com.example.intouch.InTouchWidget.WIDGET_PARTNER_MOOD_CHANGE;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -79,7 +82,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initApplication(Context c){
-        ScreenManager.getInstance().initWallpapersFirstStartup(c);
+        SharedPreferences prefs  = c.getSharedPreferences(MY_PREFERENCE,Context.MODE_PRIVATE);
+        String partner_mood =prefs.getString(WIDGET_PARTNER_MOOD_CHANGE,"nomood");
+        String my_mood = prefs.getString(WIDGET_MY_MOOD_CHANGE,"nomood");
+        if(partner_mood.equals("nomood") && my_mood.equals("nomood"))
+            ScreenManager.getInstance().initWallpapersFirstStartup(c);
     }
 
     public boolean foregroundServiceRunning(){

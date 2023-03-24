@@ -31,6 +31,10 @@ public class FirstInstructionsActivity extends AppCompatActivity implements View
         second_step_btn = findViewById(R.id.second_step_btn);
         third_step_btn = findViewById(R.id.third_step_btn);
         fourth_step_btn = findViewById(R.id.fourh_step_btn);
+        first_step_btn.setOnClickListener(this);
+        second_step_btn.setOnClickListener(this);
+        third_step_btn.setOnClickListener(this);
+        fourth_step_btn.setOnClickListener(this);
 
         first_view = findViewById(R.id.fist_step);
         second_view = findViewById(R.id.second_step);

@@ -218,12 +218,7 @@ public class LogInActivity extends AppCompatActivity {
                         FirebaseUser user = task.getResult().getUser();
                         String userUID = user.getUid();
 
-                        // Check if user is in a connection
-                        DAOConnection.getInstance().getConnectionByAUserUid(userUID,
-                                //  If there is already a connection that includes this user ->
-                                hasConnection(userUID),
-                                //  If there is no connection that includes this user ->
-                                hasNoConnection(userUID));
+
                         Log.i(TAG,"USER ID: "+userUID);
                         progressDialog.dismiss();
                         //update the token if needed
@@ -248,8 +243,16 @@ public class LogInActivity extends AppCompatActivity {
                                         User receiver = new User(user.getUid(), user.getEmail(), user.getPhotoUrl().toString(), 1, newDeviceToken);
                                         DAOUser.getInstance().update(receiver);
                                         //DAOUser.getInstance.updateUser(user);
+                                        DAOConnection.getInstance().getConnectionByAUserUid(userUID,
+                                                //  If there is already a connection that includes this user ->
+                                                hasConnection(userUID,receiver),
+                                                //  If there is no connection that includes this user ->
+                                                hasNoConnection(userUID));
                                     }
                                 });
+
+                        // Check if user is in a connection
+
 
                     } else {
                         progressDialog.dismiss();
@@ -310,15 +313,22 @@ public class LogInActivity extends AppCompatActivity {
         };
     }
 
-    private Callback<Connection> hasConnection(String userUID) {
+    private Callback<Connection> hasConnection(String userUID,User loggedUser) {
         //  If there is already a connection that includes this user ->
         return new Callback<Connection>() {
             @Override
             public void execute(Connection connection) {
                 //  check if it is first time after request was accepted
                 User currentUser = connection.firstUser.uid.equals((userUID)) ? connection.firstUser : connection.secondUser;
+
+                if(connection.firstUser.uid.equals((userUID)))
+                    connection.firstUser.deviceToken = loggedUser.getDeviceToken();
+                else
+                    connection.secondUser.deviceToken = loggedUser.getDeviceToken();
+
                 if (currentUser.notified == 0) {
                     currentUser.notified = 1;
+
                     DAOConnection.getInstance().updateConnection(connection, new Callback() {
                         @Override
                         public void execute(Object object) {
@@ -332,7 +342,19 @@ public class LogInActivity extends AppCompatActivity {
                     });
 
                 } else {
-                    redirectToHomeActivity();
+                    DAOConnection.getInstance().updateConnection(connection, new Callback() {
+
+                        @Override
+                        public void execute(Object object) {
+                            redirectToHomeActivity();
+                            //redirectToAcceptedRequestActivity(connection.firstUser.uid, connection.secondUser.uid);
+                        }
+                    }, new Callback() {
+                        @Override
+                        public void execute(Object object) {
+                            Toast.makeText(LogInActivity.this, "The user could not be notified.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         };

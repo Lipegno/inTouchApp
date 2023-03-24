@@ -248,19 +248,22 @@
         app:layout_constraintTop_toBottomOf="@+id/circles" />
 
     <TextView
-        android:id="@+id/notifications"
+        android:visibility="visible"
+        android:id="@+id/arrowNotifications"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:text="Notifications"
+        android:text="Ajuda"
         android:textAlignment="viewStart"
-        android:textSize="16sp"
+        android:textColor="#BF000000"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emojis" />
 
     <TextView
-        android:id="@+id/arrowNotifications"
+        android:visibility="visible"
+        android:id="@+id/notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -275,13 +278,17 @@
     <TextView
         android:id="@+id/signOutHome"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_height="30dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_valencia_button"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
         android:text="@string/sign_out"
-        android:textColor="#BF000000"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notifications" />
 

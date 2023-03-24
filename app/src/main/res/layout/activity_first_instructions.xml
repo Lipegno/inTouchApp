@@ -7,30 +7,52 @@
     tools:context=".FirstInstructionsActivity">
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/fist_step"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no crículo da direita os seus estados emocionais"/>
+            android:gravity="center"
+            android:textColor="#BF000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no círculo da esquerda os seus estados emocionais"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:src="@drawable/first_step"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/first_step_btn"
+            android:text="Próximo"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Próximo"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_valencia_button"
+            android:backgroundTint="@color/valencia"
+            android:fontFamily="sans-serif-medium"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            />
     </LinearLayout>
 
 
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/second_step"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,18 +60,38 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no crículo da direita os seus estados emocionais"/>
+            android:text="Os círculos representam os seguintes estados emocionais"
+            android:gravity="center"
+            android:textColor="#BF000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
         <ImageView
             android:layout_width="wrap_content"
+            android:layout_margin="50dp"
             android:layout_height="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:src="@drawable/second_step"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/second_step_btn"
+            android:layout_margin="10dp"
+            android:text="Próximo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Próximo"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_valencia_button"
+            android:backgroundTint="@color/valencia"
+            android:fontFamily="sans-serif-medium"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"/>
     </LinearLayout>
 
 
@@ -63,18 +105,36 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no crículo da direita os seus estados emocionais"/>
+            android:text="Apoie os estados emocionais da outra pessoa enviando emojis através do círculo da direita"
+            android:gravity="center"
+            android:textColor="#BF000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.6"
             android:src="@drawable/third_step"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/third_step_btn"
+            android:text="Próximo"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Próximo"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_valencia_button"
+            android:backgroundTint="@color/valencia"
+            android:fontFamily="sans-serif-medium"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"/>
     </LinearLayout>
 
 
@@ -88,18 +148,38 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Adicione o Widget da aplicação ao ecrã inicial e partilhe no crículo da direita os seus estados emocionais"/>
+            android:text="Agora já pode partilhar estados emocionais e apoiar os estados da outra pessoa"
+            android:gravity="center"
+            android:textColor="#BF000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.6"
             android:src="@drawable/fourth_step"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/fourh_step_btn"
+            android:layout_margin="10dp"
+            android:text="Ok"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Próximo"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_valencia_button"
+            android:backgroundTint="@color/valencia"
+            android:fontFamily="sans-serif-medium"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

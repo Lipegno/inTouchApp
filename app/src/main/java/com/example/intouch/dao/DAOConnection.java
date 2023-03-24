@@ -72,6 +72,7 @@ public class DAOConnection {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                //tenho de atualizar o connection aqui
                 Map<String, Object> postValues = connection.toMap();
                 databaseReference.child(connection.uID).updateChildren(postValues)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {

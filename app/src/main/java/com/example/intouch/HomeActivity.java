@@ -214,7 +214,9 @@ public class HomeActivity extends AppCompatActivity {
         notificationsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HomeActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
+                Intent i =  new Intent(HomeActivity.this, FirstInstructionsActivity.class);
+                startActivity(i);
                 // TO DO
                 // redirect to the activity where the notifications are set
             }
